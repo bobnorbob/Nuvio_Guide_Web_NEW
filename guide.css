@@ -49,8 +49,8 @@ body.dark-mode {
     --step-border: #444;
     --sub-step-bg: #2d2d2d;
     --hover-bg: #3a3a3a;
-    --tip-bg: #1a3a4a;
-    --tip-border: #2a5a6a;
+    --tip-bg: #4a90e2;
+    --tip-border: #0056b3;
     --tip-color: #e0e0e0;
     --focus-outline: 2px solid #4a90e2;
 }
@@ -172,7 +172,10 @@ h1 {
 }
 
 .main-step-content {
-    padding: var(--spacing-lg);
+    padding-top: var(--spacing-md);
+    padding-right: var(--spacing-lg);
+    padding-left: var(--spacing-lg);
+    padding-bottom: var(--spacing-md);
     border-top: none;
 }
 
@@ -209,7 +212,10 @@ h1 {
 .tip {
     font-style: italic;
     color: var(--tip-color);
-    padding: var(--spacing-md);
+    padding-top: var(--spacing-sm);
+    padding-right: var(--spacing-md);
+    padding-left: var(--spacing-md);
+    padding-bottom: var(--spacing-md);
     background: var(--tip-bg);
     border-left: 4px solid var(--tip-border);
     margin: var(--spacing-lg) 0;
