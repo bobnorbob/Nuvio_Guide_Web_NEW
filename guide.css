@@ -224,11 +224,13 @@ h1 {
     outline: none;
     cursor: pointer;
     position: relative;
+    transition: all var(--transition-duration) var(--transition-timing);
 }
 
 .checklist-item input[type="checkbox"]:checked {
     background-color: var(--success);
     border-color: var(--success);
+    box-shadow: 0 0 0 2px rgba(40, 167, 69, 0.2);
 }
 
 .checklist-item input[type="checkbox"]:checked::after {
@@ -239,10 +241,17 @@ h1 {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
+    opacity: 0;
+    transition: opacity var(--transition-duration) var(--transition-timing);
+}
+
+.checklist-item input[type="checkbox"]:checked::after {
+    opacity: 1;
 }
 
 .checklist-item input[type="checkbox"]:hover {
     border-color: var(--accent);
+    transform: scale(1.05);
 }
 
 .checklist-item input {
@@ -282,6 +291,78 @@ a:hover {
     margin: var(--spacing-sm) 0;
     border-radius: 4px;
 }
+
+/* Info styling */
+.info {
+    color: var(--accent);
+    background-color: #e7f5ff;
+    border: 1px solid #b8daff;
+    padding: var(--spacing-sm);
+    margin: var(--spacing-sm) 0;
+    border-radius: 4px;
+}
+
+/* Success styling */
+.success {
+    color: var(--success);
+    background-color: #d4edda;
+    border: 1px solid #c3e6cb;
+    padding: var(--spacing-sm);
+    margin: var(--spacing-sm) 0;
+    border-radius: 4px;
+}
+
+/* Warning styling */
+.warning {
+    color: var(--warning);
+    background-color: #fff3cd;
+    border: 1px solid #ffeeba;
+    padding: var(--spacing-sm);
+    margin: var(--spacing-sm) 0;
+    border-radius: 4px;
+}
+
+/* Note styling */
+.note {
+    color: #17a2b8;
+    background-color: #d1ecf1;
+    border: 1px solid #bee5eb;
+    padding: var(--spacing-sm);
+    margin: var(--spacing-sm) 0;
+    border-radius: 4px;
+}
+
+/* Highlight styling */
+.highlight {
+    background-color: #fff9db;
+    border-left: 4px solid #ffd33d;
+    padding: var(--spacing-sm);
+    margin: var(--spacing-sm) 0;
+    border-radius: 0 2px 2px 0;
+}
+
+/* Quote styling */
+.quote {
+    font-style: italic;
+    color: #6c757d;
+    border-left: 4px solid #dee2e6;
+    padding-left: var(--spacing-md);
+    margin: var(--spacing-md) 0;
+}
+
+/* Code block styling */
+.code {
+    font-family: 'Courier New', monospace;
+    background-color: #f8f9fa;
+    border: 1px solid #dee2e6;
+    padding: var(--spacing-sm);
+    margin: var(--spacing-sm) 0;
+    border-radius: 4px;
+    overflow-x: auto;
+}
+
+
+
 
 /* Focus styles */
 .toggle-btn:focus,
