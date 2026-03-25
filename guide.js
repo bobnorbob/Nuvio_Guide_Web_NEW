@@ -12,6 +12,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Initialize collapsible functionality after steps are loaded
     document.addEventListener('stepsLoaded', initializeCollapsible);
+
+    // Initialize checklist functionality
+    document.addEventListener('stepsLoaded', initializeChecklist);
 });
 
 async function loadSteps() {
@@ -40,41 +43,80 @@ async function loadSteps() {
     document.dispatchEvent(new Event('stepsLoaded'));
     } catch (error) {
         console.error('Error loading steps:', error);
-}
+    }
 }
 
 function initializeCollapsible() {
-    // Get all headers and add click event listeners
-    document.querySelectorAll('.main-step-header, .sub-step-header').forEach(header => {
-        // Initialize step state
-        const step = header.parentElement;
-        const content = step.querySelector('.main-step-content, .sub-step-content');
+    const mainSteps = document.querySelectorAll('.main-step');
+
+    mainSteps.forEach(mainStep => {
+        const mainStepContent = mainStep.querySelector('.main-step-content');
+        const subSteps = mainStep.querySelectorAll('.sub-step');
+
+    subSteps.forEach(subStep => {
+        const subStepHeader = subStep.querySelector('.sub-step-header');
+            const subStepContent = subStep.querySelector('.sub-step-content');
+            const subStepSpan = subStepHeader.querySelector('span');
+
+            // Initialize state
+            subStep.classList.add('collapsed');
+            subStepContent.style.maxHeight = '0';
+            subStepHeader.addEventListener('click', function() {
+                subStep.classList.toggle('expanded');
+                subStepContent.style.maxHeight = subStep.classList.contains('expanded') ? subStepContent.scrollHeight + 'px' : '0';
+
+                 // Toggle the span icon
+                if (subStep.classList.contains('expanded')) {
+                    subStepSpan.style.transform = 'rotate(45deg)';
+                } else {
+                    subStepSpan.style.transform = 'rotate(0deg)';
+                }
+
+                // Calculate the total height of the expanded sub-steps
+                let totalHeight = 0;
+    subSteps.forEach(subStep => {
+                    if (subStep.classList.contains('expanded')) {
+                        totalHeight += subStep.querySelector('.sub-step-content').scrollHeight;
+                    }
+                });
+
+                // Adjust the height of the main-step content
+                mainStepContent.style.maxHeight = (mainStepContent.scrollHeight + totalHeight) + 'px';
+            });
+        });
+    });
+
+    // Also handle main step headers
+    document.querySelectorAll('.main-step-header').forEach(header => {
+        const mainStep = header.parentElement;
+        const mainContent = mainStep.querySelector('.main-step-content');
         const span = header.querySelector('span');
 
-        // Set initial state
-        step.classList.add('collapsed');
-        span.textContent = '▶'; // Right-pointing arrow as base
+        // Initialize state
+        mainStep.classList.add('collapsed');
+        span.textContent = '+';
         span.setAttribute('aria-expanded', 'false');
-        step.setAttribute('aria-hidden', 'true');
-            content.style.maxHeight = '0';
-        // Click handler with animation
+        mainStep.setAttribute('aria-hidden', 'true');
+        mainContent.style.maxHeight = '0';
+
         header.onclick = () => {
-            // Toggle collapsed state
-            const isCollapsed = step.classList.toggle('collapsed');
+            const isCollapsed = mainStep.classList.toggle('collapsed');
 
             // Update ARIA attributes
             span.setAttribute('aria-expanded', !isCollapsed);
-            step.setAttribute('aria-hidden', isCollapsed);
+            mainStep.setAttribute('aria-hidden', isCollapsed);
+
+             // Toggle the span icon
+        if (isCollapsed) {
+            span.style.transform = 'rotate(0deg)';
+        } else {
+            span.style.transform = 'rotate(45deg)';
+        }
 
             // Animate content
-            animateContent(content, isCollapsed);
-
-            // Update parent containers if needed
-                        if (step.classList.contains('sub-step')) {
-                updateParentMainStep(step);
-            }
+            animateContent(mainContent, isCollapsed);
         };
-    });
+        });
 }
 
 function animateContent(content, isCollapsed) {
@@ -109,5 +151,61 @@ function updateParentMainStep(subStep) {
             mainContent.style.maxHeight = mainFullHeight;
         }
     }
+}
+
+function initializeChecklist() {
+    const subSteps = document.querySelectorAll('.sub-step');
+
+    subSteps.forEach((subStep, index) => {
+        const checklistItems = subStep.querySelectorAll('.checklist-item input[type="checkbox"]');
+        const subStepHeader = subStep.querySelector('.sub-step-header');
+        const subStepContent = subStep.querySelector('.sub-step-content');
+        const subStepSpan = subStepHeader.querySelector('span');
+        const mainStep = subStep.closest('.main-step');
+        const mainStepContent = mainStep.querySelector('.main-step-content');
+
+        checklistItems.forEach(checklistItem => {
+            checklistItem.addEventListener('change', function() {
+                let allChecked = true;
+                checklistItems.forEach(item => {
+                    if (!item.checked) {
+                        allChecked = false;
+                    }
+                });
+
+                if (allChecked) {
+                    subStepHeader.classList.add('checked');
+                    // Auto-collapse the current sub-step
+                    subStep.classList.remove('expanded');
+                    subStepContent.style.maxHeight = '0';
+                    subStepSpan.style.transform = 'rotate(0deg)';
+
+                    // Open the next sub-step if it exists
+                    if (index < subSteps.length - 1) {
+                        const nextSubStep = subSteps[index + 1];
+                        const nextSubStepHeader = nextSubStep.querySelector('.sub-step-header');
+                        const nextSubStepContent = nextSubStep.querySelector('.sub-step-content');
+                        const nextSubStepSpan = nextSubStepHeader.querySelector('span');
+                        nextSubStep.classList.add('expanded');
+                        nextSubStepContent.style.maxHeight = nextSubStepContent.scrollHeight + 'px';
+                        nextSubStepSpan.style.transform = 'rotate(45deg)';
+
+                        // Calculate the total height of the expanded sub-steps
+                        let totalHeight = 0;
+                        subSteps.forEach(subStep => {
+                            if (subStep.classList.contains('expanded')) {
+                                totalHeight += subStep.querySelector('.sub-step-content').scrollHeight;
+                            }
+                        });
+
+                        // Adjust the height of the main-step content
+                        mainStepContent.style.maxHeight = (mainStepContent.scrollHeight + totalHeight) + 'px';
+                    }
+                } else {
+                    subStepHeader.classList.remove('checked');
+                }
+            });
+        });
+    });
 }
 

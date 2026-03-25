@@ -60,11 +60,11 @@ body {
     background: var(--bg);
     color: var(--text);
     font-family: var(--font-family);
-    margin: 0;
-    padding: var(--spacing-md);
+    margin: var(--spacing-lg);
     line-height: 1.6;
     font-size: var(--font-size-base);
-    margin-bottom: var(--spacing-md);
+    margin-top: var(--spacing-md);
+    margin-bottom: var(--spacing-sm);
     transition: all var(--transition-duration) var(--transition-timing);
 }
 
@@ -134,6 +134,7 @@ h1 {
     transition: background var(--transition-duration) var(--transition-timing);
     border-bottom: 1px solid var(--step-border);
 }
+
 .main-step-header {
     padding: var(--spacing-sm) var(--spacing-lg);
     font-size: 1.2em;
@@ -150,36 +151,41 @@ h1 {
     transition: transform var(--transition-duration) var(--transition-timing);
     display: inline-block;
     transform-origin: center;
+    font-size: 1.2em;
+    font-weight: bold;
+    content: '+';
 }
 
 .main-step.collapsed .main-step-header span,
 .sub-step.collapsed .sub-step-header span {
-    transform: rotate(180deg);
+    transform: rotate(0deg);
 }
 
 .main-step-header span,
 .sub-step-header span {
-    transform: rotate(90deg);
+    transform: rotate(45deg);
 }
 
 /* Content styles */
 .main-step-content,
 .sub-step-content {
-    padding: var(--spacing-md);
     background: var(--step-bg);
     transition: all var(--transition-duration) var(--transition-timing);
     max-height: none;
 }
 
 .main-step-content {
-    padding-top: var(--spacing-md);
-    padding-right: var(--spacing-lg);
-    padding-left: var(--spacing-lg);
+    padding-right: var(--spacing-md);
+    padding-left: var(--spacing-md);
     padding-bottom: var(--spacing-md);
     border-top: none;
+    overflow: hidden;
+    transition: max-height var(--transition-duration) var(--transition-timing);
 }
 
 .sub-step-content {
+    padding-top: var(--spacing-md);
+    padding-left: var(--spacing-md);
     border-top: none;
 }
 
@@ -194,14 +200,49 @@ h1 {
 
 /* Body content */
 .body {
-    margin-bottom: var(--spacing-lg);
+    margin-top: var(--spacing-sm);
+    margin-bottom: var(--spacing-md);
 }
 
 /* Checklist items */
 .checklist-item {
     display: flex;
     align-items: center;
-    margin: var(--spacing-sm) 0;
+    margin-top: var(--spacing-md);
+    margin-bottom: var(--spacing-md);
+}
+
+/* Custom checkbox styles */
+.checklist-item input[type="checkbox"] {
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    width: 20px;
+    height: 20px;
+    border: 2px solid var(--border-color);
+    border-radius: 4px;
+    outline: none;
+    cursor: pointer;
+    position: relative;
+}
+
+.checklist-item input[type="checkbox"]:checked {
+    background-color: var(--success);
+    border-color: var(--success);
+}
+
+.checklist-item input[type="checkbox"]:checked::after {
+    content: '✓';
+    color: white;
+    font-size: 16px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.checklist-item input[type="checkbox"]:hover {
+    border-color: var(--accent);
 }
 
 .checklist-item input {
@@ -212,14 +253,12 @@ h1 {
 .tip {
     font-style: italic;
     color: var(--tip-color);
-    padding-top: var(--spacing-sm);
-    padding-right: var(--spacing-md);
-    padding-left: var(--spacing-md);
-    padding-bottom: var(--spacing-md);
-    background: var(--tip-bg);
+    padding: var(--spacing-sm);
+    background: var(--tip-bg) !important;
     border-left: 4px solid var(--tip-border);
-    margin: var(--spacing-lg) 0;
-    border-radius: 0 4px 4px 0;
+    margin-top: var(--spacing-sm);
+    margin-bottom: var(--spacing-md);
+    border-radius: 0 2px 2px 0;
 }
 
 /* Link styling */
@@ -292,4 +331,14 @@ a:hover {
         display: block;
     }
 }
+
+/* New checked state for sub-step headers */
+.sub-step-header.checked {
+    background: var(--success); /* Change this to your desired color */
+}
+
+.sub-step-header.checked:hover {
+    background: #218838; /* Change this to your desired hover color */
+}
+
 
