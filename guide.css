@@ -1,15 +1,15 @@
 :root {
     /* Colors */
-    --bg: #f8f9fa;
-    --text: #212529;
+    --bg: #f5f5f5;
+    --text: #333333;
     --accent: #007bff;
-    --border-color: #dee2e6;
-    --header-bg: #f8f9fa;
+    --border-color: #e0e0e0;
+    --header-bg: #ffffff;
     --header-text: #212529;
     --step-bg: #ffffff;
-    --step-border: #dee2e6;
-    --sub-step-bg: #f8f9fa;
-    --hover-bg: #e9ecef;
+    --step-border: #e0e0e0;
+    --sub-step-bg: #f9f9f9;
+    --hover-bg: #f0f0f0;
     --tip-bg: #6493aa;
     --tip-border: #2a5a6a;
     --tip-color: #212529;
@@ -71,7 +71,7 @@ body {
 .container {
     max-width: 800px;
     margin: 0 auto;
-    padding: var(--spacing-sm);
+    padding: var(--spacing-lg);
     background: var(--step-bg);
     border-radius: 8px;
     box-shadow: var(--box-shadow-md);
@@ -90,7 +90,7 @@ header {
 h1 {
     margin: 0;
     color: var(--header-text);
-    font-size: 2em;
+    font-size: 1.5em;
     font-weight: var(--font-weight-bold);
 }
 
@@ -115,7 +115,7 @@ h1 {
     border: 1px solid var(--step-border);
     border-radius: 4px;
     overflow: hidden;
-    margin-bottom: var(--spacing-md);
+    margin-bottom: var(--spacing-sm);
 }
 
 .main-step {
@@ -136,7 +136,7 @@ h1 {
 }
 
 .main-step-header {
-    padding: var(--spacing-sm) var(--spacing-lg);
+    padding: var(--spacing-sm) var(--spacing-md );
     font-size: 1.2em;
 }
 
@@ -172,9 +172,11 @@ h1 {
     background: var(--step-bg);
     transition: all var(--transition-duration) var(--transition-timing);
     max-height: none;
+    padding: var(--spacing-md);
 }
 
 .main-step-content {
+    padding-top: var(--spacing-xs);
     padding-right: var(--spacing-md);
     padding-left: var(--spacing-md);
     padding-bottom: var(--spacing-md);
@@ -210,6 +212,7 @@ h1 {
     align-items: center;
     margin-top: var(--spacing-md);
     margin-bottom: var(--spacing-md);
+    position: relative;
 }
 
 /* Custom checkbox styles */
@@ -254,8 +257,89 @@ h1 {
     transform: scale(1.05);
 }
 
+.checklist-item:hover {
+    background: var(--hover-bg);
+}
+
 .checklist-item input {
+    margin-right: var(--spacing-md);
+    flex-shrink: 0;
+}
+
+.checklist-item label {
+    flex: 1;
+    word-break: break-word;
+    line-height: 1.4;
+     margin-right: var(--spacing-sm);
+}
+
+.copy-to-clipboard {
+    display: flex;
+    align-items: center;
+    background: var(--step-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    padding: var(--spacing-xs) var(--spacing-sm);
+    margin-left: var(--spacing-sm);
+}
+
+.api-key {
+    font-family: 'Courier New', monospace;
     margin-right: var(--spacing-sm);
+    color: var(--text);
+}
+
+.copy-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform var(--transition-duration) var(--transition-timing);
+    z-index: 1;
+}
+
+.copy-btn:hover {
+    transform: scale(1.1);
+}
+
+.copy-btn .icon {
+    width: 16px;
+    height: 16px;
+    fill: var(--accent);
+}
+
+.copy-feedback {
+    position: absolute;
+    bottom: -30px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--success);
+    color: white;
+    padding: var(--spacing-xs) var(--spacing-sm);
+    border-radius: 4px;
+    font-size: 0.8em;
+    opacity: 0;
+    visibility: hidden;
+    transition: all var(--transition-duration) var(--transition-timing);
+    z-index: 1000;
+}
+
+.copy-feedback.show {
+    opacity: 1;
+    visibility: visible;
+    bottom: -20px;
+}
+
+body.dark-mode .copy-to-clipboard {
+    background: var(--sub-step-bg);
+    border-color: var(--border-color);
+}
+
+body.dark-mode .api-key {
+    color: var(--text);
 }
 
 /* Tip styling */
@@ -381,12 +465,12 @@ a:hover {
 /* Responsive design */
 @media (max-width: 768px) {
     .container {
-        padding: var(--spacing-sm);
+        padding: var(--spacing-md);
     }
 
     .main-step-header,
     .sub-step-header {
-        padding: var(--spacing-sm);
+        padding: var(--spacing-xs) var(--spacing-sm);
     }
 
     h1 {

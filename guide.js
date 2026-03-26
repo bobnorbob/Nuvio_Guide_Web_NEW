@@ -7,6 +7,33 @@ document.querySelector('.toggle-btn').onclick = () => {
 
 // Collapsible sections
 document.addEventListener('DOMContentLoaded', () => {
+    // Initialize clipboard functionality
+    const copyButtons = document.querySelectorAll('.copy-btn');
+
+    copyButtons.forEach(button => {
+        button.addEventListener('click', function() {
+            const apiKey = this.getAttribute('data-clipboard-text');
+            const feedback = this.parentElement.querySelector('.copy-feedback');
+
+            // Use the clipboard API if it is supported
+            if (navigator.clipboard) {
+                navigator.clipboard.writeText(apiKey).then(() => {
+                    // Show feedback
+                    feedback.classList.add('show');
+                    setTimeout(() => {
+                        feedback.classList.remove('show');
+                    }, 2000);
+                }).catch(err => {
+                    console.error('Failed to copy text: ', err);
+                    fallbackCopyTextToClipboard(apiKey, this);
+                });
+            } else {
+                // Fallback method for browsers that do not support the clipboard API
+                fallbackCopyTextToClipboard(apiKey, this);
+            }
+        });
+    });
+
     // Load steps
     loadSteps();
 
@@ -16,6 +43,37 @@ document.addEventListener('DOMContentLoaded', () => {
     // Initialize checklist functionality
     document.addEventListener('stepsLoaded', initializeChecklist);
 });
+
+function fallbackCopyTextToClipboard(text, button) {
+    // Create a temporary textarea element
+    const textarea = document.createElement('textarea');
+    textarea.value = text;
+    textarea.setAttribute('readonly', '');
+    textarea.style.position = 'absolute';
+    textarea.style.left = '-9999px';
+    document.body.appendChild(textarea);
+
+    // Select and copy the text
+    textarea.select();
+    try {
+        const successful = document.execCommand('copy');
+        if (successful) {
+            // Change button text to indicate success
+            const originalText = button.textContent;
+            button.textContent = 'Copied!';
+            setTimeout(() => {
+                button.textContent = originalText;
+            }, 2000);
+        } else {
+            console.error('Fallback: Could not copy text');
+        }
+    } catch (err) {
+        console.error('Fallback: Could not copy text: ', err);
+    }
+
+    // Remove the temporary textarea element
+    document.body.removeChild(textarea);
+}
 
 async function loadSteps() {
     const stepsContainer = document.getElementById('steps-container');
