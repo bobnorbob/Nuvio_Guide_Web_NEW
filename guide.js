@@ -6,31 +6,76 @@ document.querySelector('.toggle-btn').onclick = () => {
 };
 
 // Collapsible sections
+// Updated clipboard function
 document.addEventListener('DOMContentLoaded', () => {
     // Initialize clipboard functionality
     const copyButtons = document.querySelectorAll('.copy-btn');
 
     copyButtons.forEach(button => {
-        button.addEventListener('click', function() {
+        button.addEventListener('click', async function() {
             const apiKey = this.getAttribute('data-clipboard-text');
             const feedback = this.parentElement.querySelector('.copy-feedback');
 
-            // Use the clipboard API if it is supported
-            if (navigator.clipboard) {
-                navigator.clipboard.writeText(apiKey).then(() => {
-                    // Show feedback
+            try {
+                await navigator.clipboard.writeText(apiKey);
+                // Show feedback
+                feedback.classList.add('show');
+                setTimeout(() => {
+                    feedback.classList.remove('show');
+                }, 2000);
+            } catch (err) {
+                console.error('Failed to copy text: ', err);
+                // Fallback: Use a temporary textarea
+                const textarea = document.createElement('textarea');
+                textarea.value = apiKey;
+                textarea.style.position = 'fixed'; // Prevent scrolling
+                textarea.style.opacity = 0;
+                document.body.appendChild(textarea);
+                textarea.select();
+                document.execCommand('copy');
+                document.body.removeChild(textarea);
+
+                // Show feedback even if fallback is used
+                feedback.classList.add('show');
+                setTimeout(() => {
+                    feedback.classList.remove('show');
+                }, 2000);
+            }
+        });
+    });
+
+    // Re-initialize clipboard after steps are loaded
+    document.addEventListener('stepsLoaded', () => {
+        const newCopyButtons = document.querySelectorAll('.copy-btn');
+        newCopyButtons.forEach(button => {
+            button.addEventListener('click', async function() {
+                const apiKey = this.getAttribute('data-clipboard-text');
+                const feedback = this.parentElement.querySelector('.copy-feedback');
+
+                try {
+                    await navigator.clipboard.writeText(apiKey);
                     feedback.classList.add('show');
                     setTimeout(() => {
                         feedback.classList.remove('show');
                     }, 2000);
-                }).catch(err => {
+                } catch (err) {
                     console.error('Failed to copy text: ', err);
-                    fallbackCopyTextToClipboard(apiKey, this);
-                });
-            } else {
-                // Fallback method for browsers that do not support the clipboard API
-                fallbackCopyTextToClipboard(apiKey, this);
-            }
+                    // Fallback
+                    const textarea = document.createElement('textarea');
+                    textarea.value = apiKey;
+                    textarea.style.position = 'fixed';
+                    textarea.style.opacity = 0;
+                    document.body.appendChild(textarea);
+                    textarea.select();
+                    document.execCommand('copy');
+                    document.body.removeChild(textarea);
+
+                    feedback.classList.add('show');
+                    setTimeout(() => {
+                        feedback.classList.remove('show');
+                    }, 2000);
+                }
+            });
         });
     });
 
