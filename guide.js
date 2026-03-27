@@ -10,11 +10,16 @@ function setupClipboard(button) {
     button.addEventListener('click', async function() {
         const apiKey = this.getAttribute('data-clipboard-text');
         const feedback = this.parentElement.querySelector('.copy-feedback');
+        const icon = this.querySelector('.icon');
 
         try {
             await navigator.clipboard.writeText(apiKey);
-            feedback.classList.add('show');
-            setTimeout(() => feedback.classList.remove('show'), 2000);
+            this.classList.add('copied');
+            if (feedback) {
+                feedback.classList.add('show');
+                setTimeout(() => feedback.classList.remove('show'), 2000);
+            }
+            setTimeout(() => this.classList.remove('copied'), 2000);
         } catch (err) {
             console.error('Failed to copy text: ', err);
             // Fallback to execCommand
@@ -26,29 +31,16 @@ function setupClipboard(button) {
             textarea.select();
             document.execCommand('copy');
             document.body.removeChild(textarea);
-            // Show feedback even if fallback is used
-            feedback.classList.add('show');
-            setTimeout(() => feedback.classList.remove('show'), 2000);
+
+            this.classList.add('copied');
+            if (feedback) {
+                feedback.classList.add('show');
+                setTimeout(() => feedback.classList.remove('show'), 2000);
+            }
+            setTimeout(() => this.classList.remove('copied'), 2000);
         }
     });
 }
-
-// Collapsible sections
-document.addEventListener('DOMContentLoaded', () => {
-    // Initialize clipboard for existing buttons
-    document.querySelectorAll('.copy-btn').forEach(setupClipboard);
-
-    // Load steps
-    loadSteps();
-
-    // Initialize checklist functionality
-    document.addEventListener('stepsLoaded', initializeChecklist);
-});
-
-// Re-initialize clipboard after steps are loaded
-document.addEventListener('stepsLoaded', () => {
-    document.querySelectorAll('.copy-btn').forEach(setupClipboard);
-});
 
 function fallbackCopyTextToClipboard(text, button) {
     // Create a temporary textarea element
@@ -64,7 +56,6 @@ function fallbackCopyTextToClipboard(text, button) {
     try {
         const successful = document.execCommand('copy');
         if (successful) {
-            // Change button text to indicate success
             const originalText = button.textContent;
             button.textContent = 'Copied!';
             setTimeout(() => {
@@ -80,6 +71,23 @@ function fallbackCopyTextToClipboard(text, button) {
     // Remove the temporary textarea element
     document.body.removeChild(textarea);
 }
+
+// Collapsible sections
+document.addEventListener('DOMContentLoaded', () => {
+    // Initialize clipboard for existing buttons
+    document.querySelectorAll('.copy-btn').forEach(setupClipboard);
+
+    // Load steps
+    loadSteps();
+
+    // Initialize checklist functionality
+    document.addEventListener('stepsLoaded', initializeChecklist);
+
+    // Re-initialize clipboard after steps are loaded
+    document.addEventListener('stepsLoaded', () => {
+        document.querySelectorAll('.copy-btn').forEach(setupClipboard);
+    });
+});
 
 async function loadSteps() {
     const stepsContainer = document.getElementById('steps-container');
@@ -146,7 +154,6 @@ function initializeMainSteps() {
 }
 
 // Initialize collapsible behavior for sub-steps
-// Initialize collapsible behavior for sub-steps
 function initializeSubSteps() {
     const mainSteps = document.querySelectorAll('.main-step');
     mainSteps.forEach(mainStep => {
@@ -181,27 +188,6 @@ function initializeSubSteps() {
             });
         });
     });
-}
-
-// Update parent main step height
-function updateParentMainStep(subStep) {
-    const mainStep = subStep.closest('.main-step');
-    if (mainStep) {
-        const mainContent = mainStep.querySelector('.main-step-content');
-        if (mainContent) {
-            const subSteps = mainStep.querySelectorAll('.sub-step');
-            let totalHeight = 0;
-
-            subSteps.forEach(currentSubStep => {
-                if (currentSubStep.classList.contains('expanded')) {
-                    const currentSubStepContent = currentSubStep.querySelector('.sub-step-content');
-                    totalHeight += currentSubStepContent.scrollHeight;
-                }
-            });
-
-            mainContent.style.maxHeight = mainContent.scrollHeight + totalHeight + 'px';
-        }
-    }
 }
 
 // Call both functions after steps are loaded
@@ -239,9 +225,17 @@ function updateParentMainStep(subStep) {
     if (mainStep) {
         const mainContent = mainStep.querySelector('.main-step-content');
         if (mainContent) {
-            mainContent.style.maxHeight = 'none';
-            const mainFullHeight = mainContent.scrollHeight + 'px';
-            mainContent.style.maxHeight = mainFullHeight;
+            const subSteps = mainStep.querySelectorAll('.sub-step');
+            let totalHeight = 0;
+
+            subSteps.forEach(currentSubStep => {
+                if (currentSubStep.classList.contains('expanded')) {
+                    const currentSubStepContent = currentSubStep.querySelector('.sub-step-content');
+                    totalHeight += currentSubStepContent.scrollHeight;
+                }
+            });
+
+            mainContent.style.maxHeight = mainContent.scrollHeight + totalHeight + 'px';
         }
     }
 }

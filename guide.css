@@ -1,16 +1,16 @@
 :root {
     /* Existing variables */
-    --bg: #a6a6a6;
-    --text: #333333;
+    --bg: #f8f9fa;
+    --text: #212529;
     --accent: #007bff;
-    --border-color: #e0e0e0;
-    --header-bg: #e8e8e8;
+    --border-color: #cccccc;
+    --header-bg: #f8f9fa;
     --header-text: #212529;
     --step-bg: #ffffff;
     --step-border: #e0e0e0;
     --sub-step-bg: #f9f9f9;
-    --hover-bg: #d2d2d2;
-    --tip-bg: #6493aa;
+    --hover-bg: #e0e0e0;
+    --tip-bg: #5da9dd;
     --tip-border: #2a5a6a;
     --tip-color: #ffffff;
     --success: #28a745;
@@ -24,13 +24,13 @@
     --note-border: #bee5eb;
     --error-bg: #f8d7da;
     --error-border: #f5c6cb;
-    --info-bg: #e7f5ff;
+    --info-bg: #cfe2ff;
     --info-border: #b8daff;
     --success-bg: #d4edda;
     --success-border: #c3e6cb;
     --warning-bg: #fff3cd;
     --warning-border: #ffeeba;
-    --highlight-bg: #fff9db;
+    --highlight-bg: #fff3cd
     --highlight-border: #ffd33d;
     --quote-color: #6c757d;
     --quote-border: #dee2e6;
@@ -297,49 +297,67 @@ h1 {
 }
 
 .checklist-item label {
-    flex: 1;
+    flex: 0 0 auto;
     word-break: break-word;
     line-height: 1.4;
-     margin-right: var(--spacing-sm);
+    margin-right: var(--spacing-sm);
 }
 
 /* ===== Copy-to-Clipboard ===== */
 .copy-to-clipboard {
-    display: flex;
+    display: inline-flex;
     align-items: center;
     background: var(--step-bg);
     border: 1px solid var(--border-color);
     border-radius: 4px;
     padding: var(--spacing-xs) var(--spacing-sm);
-    margin-left: var(--spacing-sm);
+    height: 2rem;
 }
 
 .api-key {
     font-family: 'Courier New', monospace;
     margin-right: var(--spacing-sm);
     color: var(--text);
+    font-size: 0.9em;
 }
 
 .copy-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
     background: none;
     border: none;
     cursor: pointer;
-    padding: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: transform var(--transition-duration) var(--transition-timing);
-    z-index: 1;
+    padding: 0.25rem;
+    border-radius: 4px;
+    transition: background var(--transition-duration) var(--transition-timing);
 }
 
 .copy-btn:hover {
-    transform: scale(1.1);
+    background: rgba(0, 123, 255, 0.1);
 }
 
 .copy-btn .icon {
-    width: 16px;
-    height: 16px;
+    width: 1.2rem;
+    height: 1.2rem;
+    transition: fill var(--transition-duration) var(--transition-timing);
+}
+
+.copy-btn .copy-icon {
     fill: var(--accent);
+}
+
+.copy-btn .check-icon {
+    fill: var(--success);
+    display: none;
+}
+
+.copy-btn.copied .copy-icon {
+    display: none;
+}
+
+.copy-btn.copied .check-icon {
+    display: block;
 }
 
 .copy-feedback {
@@ -353,7 +371,8 @@ h1 {
     opacity: 0;
     visibility: hidden;
     transition: opacity var(--transition-duration) var(--transition-timing);
-    z-index: 1000;
+    position: relative;
+    top: -0.25rem;
 }
 
 .copy-feedback.show {
