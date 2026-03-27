@@ -55,7 +55,7 @@ body.dark-mode {
     --focus-outline: 2px solid #4a90e2;
 }
 
-/* Base styles */
+/* ===== Base Styles ===== */
 body {
     background: var(--bg);
     color: var(--text);
@@ -63,8 +63,7 @@ body {
     margin: var(--spacing-lg);
     line-height: 1.6;
     font-size: var(--font-size-base);
-    margin-top: var(--spacing-md);
-    margin-bottom: var(--spacing-sm);
+    margin: var(--spacing-sm) 0 var(--spacing-md) 0;
     transition: all var(--transition-duration) var(--transition-timing);
 }
 
@@ -77,7 +76,7 @@ body {
     box-shadow: var(--box-shadow-md);
 }
 
-/* Header styles */
+/* ===== Header Styles ===== */
 header {
     display: flex;
     justify-content: space-between;
@@ -94,7 +93,7 @@ h1 {
     font-weight: var(--font-weight-bold);
 }
 
-/* Button styles */
+/* ===== Button Styles ===== */
 .toggle-btn {
     background: var(--accent);
     color: white;
@@ -110,7 +109,7 @@ h1 {
     background: #0056b3;
 }
 
-/* Collapsible section styles */
+/* ===== Collapsible Sections ===== */
 .main-step, .sub-step {
     border: 1px solid var(--step-border);
     border-radius: 4px;
@@ -136,7 +135,7 @@ h1 {
 }
 
 .main-step-header {
-    padding: var(--spacing-sm) var(--spacing-md );
+    padding: var(--spacing-sm) var(--spacing-md);
     font-size: 1.2em;
 }
 
@@ -200,13 +199,13 @@ h1 {
     overflow: hidden;
     }
 
-/* Body content */
+/* ===== Body Content ===== */
 .body {
     margin-top: var(--spacing-sm);
     margin-bottom: var(--spacing-md);
 }
 
-/* Checklist items */
+/* ===== Checklist Items ===== */
 .checklist-item {
     display: flex;
     align-items: center;
@@ -215,19 +214,16 @@ h1 {
     position: relative;
 }
 
-/* Custom checkbox styles */
 .checklist-item input[type="checkbox"] {
     appearance: none;
-    -webkit-appearance: none;
-    -moz-appearance: none;
     width: 20px;
     height: 20px;
     border: 2px solid var(--border-color);
     border-radius: 4px;
-    outline: none;
     cursor: pointer;
     position: relative;
-    transition: all var(--transition-duration) var(--transition-timing);
+    transition: background var(--transition-duration) var(--transition-timing),
+                border-color var(--transition-duration) var(--transition-timing);
 }
 
 .checklist-item input[type="checkbox"]:checked {
@@ -244,8 +240,6 @@ h1 {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    opacity: 0;
-    transition: opacity var(--transition-duration) var(--transition-timing);
 }
 
 .checklist-item input[type="checkbox"]:checked::after {
@@ -273,6 +267,7 @@ h1 {
      margin-right: var(--spacing-sm);
 }
 
+/* ===== Copy-to-Clipboard ===== */
 .copy-to-clipboard {
     display: flex;
     align-items: center;
@@ -312,10 +307,8 @@ h1 {
 }
 
 .copy-feedback {
-    position: absolute;
-    bottom: -30px;
-    left: 50%;
-    transform: translateX(-50%);
+    display: inline-block;
+    margin-left: var(--spacing-sm);
     background: var(--success);
     color: white;
     padding: var(--spacing-xs) var(--spacing-sm);
@@ -323,14 +316,13 @@ h1 {
     font-size: 0.8em;
     opacity: 0;
     visibility: hidden;
-    transition: all var(--transition-duration) var(--transition-timing);
+    transition: opacity var(--transition-duration) var(--transition-timing);
     z-index: 1000;
 }
 
 .copy-feedback.show {
     opacity: 1;
     visibility: visible;
-    bottom: -20px;
 }
 
 body.dark-mode .copy-to-clipboard {
@@ -342,7 +334,7 @@ body.dark-mode .api-key {
     color: var(--text);
 }
 
-/* Tip styling */
+/* ===== Tip Styling ===== */
 .tip {
     font-style: italic;
     color: var(--tip-color);
@@ -354,7 +346,7 @@ body.dark-mode .api-key {
     border-radius: 0 2px 2px 0;
 }
 
-/* Link styling */
+/* ===== Link Styling ===== */
 a {
     color: var(--accent);
     text-decoration: none;
@@ -366,7 +358,7 @@ a:hover {
     color: #0056b3;
 }
 
-/* Error styling */
+/* ===== Error Styling ===== */
 .error {
     color: var(--error);
     background-color: #f8d7da;
@@ -376,7 +368,7 @@ a:hover {
     border-radius: 4px;
 }
 
-/* Info styling */
+/* ===== Info Styling ===== */
 .info {
     color: var(--accent);
     background-color: #e7f5ff;
@@ -386,7 +378,7 @@ a:hover {
     border-radius: 4px;
 }
 
-/* Success styling */
+/* ===== Success Styling ===== */
 .success {
     color: var(--success);
     background-color: #d4edda;
@@ -396,7 +388,7 @@ a:hover {
     border-radius: 4px;
 }
 
-/* Warning styling */
+/* ===== Warning Styling ===== */
 .warning {
     color: var(--warning);
     background-color: #fff3cd;
@@ -406,7 +398,7 @@ a:hover {
     border-radius: 4px;
 }
 
-/* Note styling */
+/* ===== Note Styling ===== */
 .note {
     color: #17a2b8;
     background-color: #d1ecf1;
@@ -416,7 +408,7 @@ a:hover {
     border-radius: 4px;
 }
 
-/* Highlight styling */
+/* ===== Highlight Styling ===== */
 .highlight {
     background-color: #fff9db;
     border-left: 4px solid #ffd33d;
@@ -425,7 +417,7 @@ a:hover {
     border-radius: 0 2px 2px 0;
 }
 
-/* Quote styling */
+/* ===== Quote Styling ===== */
 .quote {
     font-style: italic;
     color: #6c757d;
@@ -434,7 +426,7 @@ a:hover {
     margin: var(--spacing-md) 0;
 }
 
-/* Code block styling */
+/* ===== Code Styling ===== */
 .code {
     font-family: 'Courier New', monospace;
     background-color: #f8f9fa;
@@ -445,24 +437,21 @@ a:hover {
     overflow-x: auto;
 }
 
-
-
-
-/* Focus styles */
+/* ===== Focus Styles ===== */
 .toggle-btn:focus,
 .main-step-header:focus,
 .sub-step-header:focus {
     outline: var(--focus-outline);
 }
 
-/* Active styles */
+/* ===== Active Styles ===== */
 .toggle-btn:active,
 .main-step-header:active,
 .sub-step-header:active {
     transform: translateY(1px);
 }
 
-/* Responsive design */
+/* ===== Responsive Design ===== */
 @media (max-width: 768px) {
     .container {
         padding: var(--spacing-md);
@@ -478,7 +467,7 @@ a:hover {
     }
 }
 
-/* Print styles */
+/* ===== Print Styles ===== */
 @media print {
     body {
         background: white;
@@ -497,7 +486,7 @@ a:hover {
     }
 }
 
-/* New checked state for sub-step headers */
+/* ===== Checked State for Sub-Step Headers ===== */
 .sub-step-header.checked {
     background: var(--success); /* Change this to your desired color */
 }
@@ -505,5 +494,3 @@ a:hover {
 .sub-step-header.checked:hover {
     background: #218838; /* Change this to your desired hover color */
 }
-
-
