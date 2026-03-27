@@ -245,10 +245,8 @@ h1 {
 .checklist-item {
     display: flex;
     align-items: center;
-    margin-top: var(--spacing-md);
-    margin-bottom: var(--spacing-md);
-    position: relative;
-    flex-wrap: wrap;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
 }
 
 .checklist-item input[type="checkbox"] {
@@ -304,49 +302,42 @@ h1 {
     margin-right: var(--spacing-sm);
 }
 
-/* ==== New Copy-to-Clipboard Button ==== */
+/* ==== Copy-to-Clipboard Function ==== */
 .copy-container {
     display: inline-flex;
     align-items: center;
-    background: var(--step-bg);
-    border: 1px solid var(--border-color);
-    border-radius: 4px;
-    padding: var(--spacing-xs) var(--spacing-sm);
-    height: 1.75rem;
-    margin: 0 var(--spacing-xs);
-    vertical-align: middle;
-}
-
-.copy-container {
-    margin-left: 5px
+    margin-left: 10px;
 }
 
 .copy-btn {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    background: none;
+    background: var(--accent);
+    color: white;
     border: none;
-    cursor: pointer;
-    padding: 0.25rem;
+    padding: var(--spacing-sm) var(--spacing-md);
     border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.9em;
     transition: background var(--transition-duration) var(--transition-timing);
-    margin-left: 1rem;
 }
 
 .api-key {
     font-family: 'Courier New', monospace;
     color: var(--text);
     font-size: 0.9em;
+    background: var(--hover-bg);
+    padding: 2px 5px;
+    border-radius: 3px;
+    margin-right: 5px;
 }
 
 .copy-btn:hover {
-    background: rgba(0, 123, 255, 0.1);
+    opacity: 0.8;
 }
 
-.copy-btn .icon {
-    width: 1.2rem;
-    height: 1.2rem;
+.icon {
+    width: 18px;
+    height: 18px;
+    fill: currentColor;
 }
 
 .copy-btn .copy-icon {

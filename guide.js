@@ -5,21 +5,6 @@ document.querySelector('.toggle-btn').addEventListener('click', () => {
         isDarkMode ? 'Disable Dark Mode' : 'Enable Dark Mode';
 });
 
-// New clipboard setup function
-document.querySelectorAll('.copy-btn').forEach(button => {
-    button.addEventListener('click', () => {
-        const apiKey = button.getAttribute('data-clipboard-text');
-        navigator.clipboard.writeText(apiKey).then(() => {
-            button.textContent = 'Copied!';
-            setTimeout(() => {
-                button.textContent = 'Copy API Key';
-            }, 2000);
-        }).catch(err => {
-            console.error('Failed to copy text: ', err);
-        });
-    });
-});
-
 // Reusable clipboard setup function
 function setupClipboard(button) {
     button.addEventListener('click', async function() {
