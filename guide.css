@@ -248,6 +248,7 @@ h1 {
     margin-top: var(--spacing-md);
     margin-bottom: var(--spacing-md);
     position: relative;
+    flex-wrap: wrap;
 }
 
 .checklist-item input[type="checkbox"] {
@@ -304,8 +305,8 @@ h1 {
 }
 
 /* ===== Copy-to-Clipboard ===== */
-.inline-copy-container {
-    display: inline-flex;
+.inline-label-container {
+    display: flex;
     align-items: center;
 }
 
@@ -326,6 +327,7 @@ h1 {
     color: var(--quote-color);
     font-style: italic;
     margin-left: var(--spacing-xs);
+    align-self: right;
 }
 
 .copy-btn {
@@ -338,7 +340,7 @@ h1 {
     padding: 0.25rem;
     border-radius: 4px;
     transition: background var(--transition-duration) var(--transition-timing);
-    width: auto;
+    margin-left: 1rem;
 }
 
 .copy-btn:hover {
