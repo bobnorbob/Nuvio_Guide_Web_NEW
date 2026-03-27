@@ -9,16 +9,12 @@ document.querySelector('.toggle-btn').addEventListener('click', () => {
 function setupClipboard(button) {
     button.addEventListener('click', async function() {
         const apiKey = this.getAttribute('data-clipboard-text');
-        const copyIcon = this.querySelector('.copy-icon');
-        const checkIcon = this.querySelector('.check-icon');
-
         try {
             await navigator.clipboard.writeText(apiKey);
-            copyIcon.style.display = 'none';
-            checkIcon.style.display = 'block';
+            const originalText = this.textContent;
+            this.textContent = 'Copied!';
             setTimeout(() => {
-                copyIcon.style.display = 'block';
-                checkIcon.style.display = 'none';
+                this.textContent = originalText;
             }, 2000);
         } catch (err) {
             console.error('Failed to copy text: ', err);
@@ -32,11 +28,10 @@ function setupClipboard(button) {
             document.execCommand('copy');
             document.body.removeChild(textarea);
 
-            copyIcon.style.display = 'none';
-            checkIcon.style.display = 'block';
+            const originalText = this.textContent;
+            this.textContent = 'Copied!';
             setTimeout(() => {
-                copyIcon.style.display = 'block';
-                checkIcon.style.display = 'none';
+                this.textContent = originalText;
             }, 2000);
         }
     });

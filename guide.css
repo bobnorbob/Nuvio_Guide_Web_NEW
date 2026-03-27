@@ -296,8 +296,7 @@ h1 {
 }
 
 .checklist-item label {
-    flex: 0 0 auto;
-    word-break: break-word;
+    flex: 0 auto 0;
     line-height: 1.4;
     margin-right: var(--spacing-sm);
 }
@@ -318,20 +317,23 @@ h1 {
     cursor: pointer;
     font-size: 0.9em;
     transition: background var(--transition-duration) var(--transition-timing);
+    width: 120px; /* Fixed width */
+    text-align: center;
 }
 
 .api-key {
     font-family: 'Courier New', monospace;
     color: var(--text);
     font-size: 0.9em;
-    background: var(--hover-bg);
+    background: var(--step-bg);
+    border: var(--accent);
+    border-radius: 4px;
     padding: 2px 5px;
-    border-radius: 3px;
     margin-right: 5px;
 }
 
 .copy-btn:hover {
-    opacity: 0.8;
+    background: #0056b3;
 }
 
 .icon {
