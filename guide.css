@@ -305,11 +305,6 @@ h1 {
 }
 
 /* ===== Copy-to-Clipboard ===== */
-.inline-label-container {
-    display: flex;
-    align-items: center;
-}
-
 .copy-to-clipboard {
     display: inline-flex;
     align-items: center;
@@ -322,12 +317,10 @@ h1 {
     vertical-align: middle;
 }
 
-.api-key-description {
-    font-size: 0.85em;
-    color: var(--quote-color);
-    font-style: italic;
-    margin-left: var(--spacing-xs);
-    align-self: right;
+.api-key {
+    font-family: 'Courier New', monospace;
+    color: var(--text);
+    font-size: 0.9em;
 }
 
 .copy-btn {
@@ -362,24 +355,19 @@ h1 {
     display: none;
 }
 
-.copy-feedback {
-    display: inline-block;
-    margin-left: var(--spacing-sm);
-    background: var(--success);
-    color: white;
-    padding: var(--spacing-xs) var(--spacing-sm);
-    border-radius: 4px;
-    font-size: 0.8em;
-    opacity: 0;
-    visibility: hidden;
-    transition: opacity var(--transition-duration) var(--transition-timing);
-    position: relative;
-    top: -0.25rem;
+.copy-btn.copied .copy-icon {
+    display: none;
 }
 
-.copy-feedback.show {
-    opacity: 1;
-    visibility: visible;
+.copy-btn.copied .check-icon {
+    display: block;
+}
+
+.api-key-description {
+    font-size: 0.85em;
+    color: var(--quote-color);
+    font-style: italic;
+    margin-right: var(--spacing-sm);
 }
 
 body.dark-mode .copy-to-clipboard {

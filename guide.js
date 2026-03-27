@@ -9,25 +9,16 @@ document.querySelector('.toggle-btn').addEventListener('click', () => {
 function setupClipboard(button) {
     button.addEventListener('click', async function() {
         const apiKey = this.getAttribute('data-clipboard-text');
-        const feedback = this.parentElement.nextElementSibling;
         const copyIcon = this.querySelector('.copy-icon');
         const checkIcon = this.querySelector('.check-icon');
 
         try {
             await navigator.clipboard.writeText(apiKey);
-            if (copyIcon && checkIcon) {
-                copyIcon.style.display = 'none';
-                checkIcon.style.display = 'block';
-            }
-            if (feedback) {
-                feedback.classList.add('show');
-                setTimeout(() => feedback.classList.remove('show'), 2000);
-            }
+            copyIcon.style.display = 'none';
+            checkIcon.style.display = 'block';
             setTimeout(() => {
-                if (copyIcon && checkIcon) {
-                    copyIcon.style.display = 'block';
-                    checkIcon.style.display = 'none';
-                }
+                copyIcon.style.display = 'block';
+                checkIcon.style.display = 'none';
             }, 2000);
         } catch (err) {
             console.error('Failed to copy text: ', err);
@@ -41,19 +32,11 @@ function setupClipboard(button) {
             document.execCommand('copy');
             document.body.removeChild(textarea);
 
-            if (copyIcon && checkIcon) {
-                copyIcon.style.display = 'none';
-                checkIcon.style.display = 'block';
-            }
-            if (feedback) {
-                feedback.classList.add('show');
-                setTimeout(() => feedback.classList.remove('show'), 2000);
-            }
+            copyIcon.style.display = 'none';
+            checkIcon.style.display = 'block';
             setTimeout(() => {
-                if (copyIcon && checkIcon) {
-                    copyIcon.style.display = 'block';
-                    checkIcon.style.display = 'none';
-                }
+                copyIcon.style.display = 'block';
+                checkIcon.style.display = 'none';
             }, 2000);
         }
     });
