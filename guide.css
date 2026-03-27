@@ -180,6 +180,15 @@ h1 {
     background: var(--hover-bg);
 }
 
+.main-step-header.checked {
+    background: var(--success);
+    color: white;
+}
+
+.main-step-header.checked:hover {
+    background: #218838;
+}
+
 /* Arrow animation */
 .main-step-header span,
 .sub-step-header span {

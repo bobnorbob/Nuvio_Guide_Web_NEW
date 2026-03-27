@@ -236,40 +236,73 @@ function updateParentMainStep(subStep) {
 }
 
 function initializeChecklist() {
-    document.querySelectorAll('.sub-step').forEach((subStep, index) => {
-        const checklistItems = subStep.querySelectorAll('.checklist-item input[type="checkbox"]');
-        const subStepHeader = subStep.querySelector('.sub-step-header');
-        const subStepContent = subStep.querySelector('.sub-step-content');
-        const subStepSpan = subStepHeader.querySelector('span');
+    document.querySelectorAll('.main-step').forEach((mainStep, mainIndex) => {
+        const subSteps = mainStep.querySelectorAll('.sub-step');
+        const mainStepHeader = mainStep.querySelector('.main-step-header');
+        const mainStepContent = mainStep.querySelector('.main-step-content');
+        const mainStepSpan = mainStepHeader.querySelector('span');
 
-        // Skip if no checklist items
-        if (checklistItems.length === 0) return;
+        subSteps.forEach((subStep, subIndex) => {
+            const checklistItems = subStep.querySelectorAll('.checklist-item input[type="checkbox"]');
+            const subStepHeader = subStep.querySelector('.sub-step-header');
+            const subStepContent = subStep.querySelector('.sub-step-content');
+            const subStepSpan = subStepHeader.querySelector('span');
 
-        checklistItems.forEach(item => {
-            item.addEventListener('change', () => {
-                const allChecked = Array.from(checklistItems).every(item => item.checked);
+            // Skip if no checklist items
+            if (checklistItems.length === 0) return;
 
-                if (allChecked) {
-                    subStepHeader.classList.add('checked');
-                    // Collapse current sub-step
-                    subStep.classList.remove('expanded');
-                    subStepContent.style.maxHeight = '0';
-                    subStepSpan.style.transform = 'rotate(0deg)';
+            checklistItems.forEach(item => {
+                item.addEventListener('change', () => {
+                    const allChecked = Array.from(checklistItems).every(item => item.checked);
 
-                    // Open next sub-step if it exists
-                    const nextSubStep = document.querySelectorAll('.sub-step')[index + 1];
-                    if (nextSubStep) {
-                        const nextSubStepHeader = nextSubStep.querySelector('.sub-step-header');
-                        const nextSubStepContent = nextSubStep.querySelector('.sub-step-content');
-                        const nextSubStepSpan = nextSubStepHeader.querySelector('span');
-                        nextSubStep.classList.add('expanded');
-                        nextSubStepContent.style.maxHeight = `${nextSubStepContent.scrollHeight}px`;
-                        nextSubStepSpan.style.transform = 'rotate(45deg)';
-                        updateParentMainStep(nextSubStep);
+                    if (allChecked) {
+                        subStepHeader.classList.add('checked');
+                        // Collapse current sub-step
+                        subStep.classList.remove('expanded');
+                        subStepContent.style.maxHeight = '0';
+                        subStepSpan.style.transform = 'rotate(0deg)';
+
+                        // Open next sub-step if it exists
+                        const nextSubStep = subSteps[subIndex + 1];
+                        if (nextSubStep) {
+                            const nextSubStepHeader = nextSubStep.querySelector('.sub-step-header');
+                            const nextSubStepContent = nextSubStep.querySelector('.sub-step-content');
+                            const nextSubStepSpan = nextSubStepHeader.querySelector('span');
+                            nextSubStep.classList.add('expanded');
+                            nextSubStepContent.style.maxHeight = `${nextSubStepContent.scrollHeight}px`;
+                            nextSubStepSpan.style.transform = 'rotate(45deg)';
+                            updateParentMainStep(nextSubStep);
+                        }
+
+                        // Check if all sub-steps are checked
+                        const allSubStepsChecked = Array.from(subSteps).every(subStep => {
+                            const subStepHeader = subStep.querySelector('.sub-step-header');
+                            return subStepHeader.classList.contains('checked');
+                        });
+
+                        if (allSubStepsChecked) {
+                            // Collapse the main-step
+                            mainStep.classList.add('collapsed');
+                            mainStepContent.style.maxHeight = '0';
+                            mainStepSpan.style.transform = 'rotate(0deg)';
+                            mainStepHeader.classList.add('checked');
+
+                            // Open the next main-step if it exists
+                            const nextMainStep = document.querySelectorAll('.main-step')[mainIndex + 1];
+                            if (nextMainStep) {
+                                const nextMainStepHeader = nextMainStep.querySelector('.main-step-header');
+                                const nextMainStepContent = nextMainStep.querySelector('.main-step-content');
+                                const nextMainStepSpan = nextMainStepHeader.querySelector('span');
+
+                                nextMainStep.classList.remove('collapsed');
+                                nextMainStepContent.style.maxHeight = `${nextMainStepContent.scrollHeight}px`;
+                                nextMainStepSpan.style.transform = 'rotate(45deg)';
+                            }
+                        }
+                    } else {
+                        subStepHeader.classList.remove('checked');
                     }
-                } else {
-                    subStepHeader.classList.remove('checked');
-                }
+                });
             });
         });
     });
