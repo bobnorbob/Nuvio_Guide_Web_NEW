@@ -9,17 +9,26 @@ document.querySelector('.toggle-btn').addEventListener('click', () => {
 function setupClipboard(button) {
     button.addEventListener('click', async function() {
         const apiKey = this.getAttribute('data-clipboard-text');
-        const feedback = this.parentElement.querySelector('.copy-feedback');
-        const icon = this.querySelector('.icon');
+        const feedback = this.parentElement.nextElementSibling;
+        const copyIcon = this.querySelector('.copy-icon');
+        const checkIcon = this.querySelector('.check-icon');
 
         try {
             await navigator.clipboard.writeText(apiKey);
-            this.classList.add('copied');
+            if (copyIcon && checkIcon) {
+                copyIcon.style.display = 'none';
+                checkIcon.style.display = 'block';
+            }
             if (feedback) {
                 feedback.classList.add('show');
                 setTimeout(() => feedback.classList.remove('show'), 2000);
             }
-            setTimeout(() => this.classList.remove('copied'), 2000);
+            setTimeout(() => {
+                if (copyIcon && checkIcon) {
+                    copyIcon.style.display = 'block';
+                    checkIcon.style.display = 'none';
+                }
+            }, 2000);
         } catch (err) {
             console.error('Failed to copy text: ', err);
             // Fallback to execCommand
@@ -32,12 +41,20 @@ function setupClipboard(button) {
             document.execCommand('copy');
             document.body.removeChild(textarea);
 
-            this.classList.add('copied');
+            if (copyIcon && checkIcon) {
+                copyIcon.style.display = 'none';
+                checkIcon.style.display = 'block';
+            }
             if (feedback) {
                 feedback.classList.add('show');
                 setTimeout(() => feedback.classList.remove('show'), 2000);
             }
-            setTimeout(() => this.classList.remove('copied'), 2000);
+            setTimeout(() => {
+                if (copyIcon && checkIcon) {
+                    copyIcon.style.display = 'block';
+                    checkIcon.style.display = 'none';
+                }
+            }, 2000);
         }
     });
 }
