@@ -1,92 +1,53 @@
 // Dark mode toggle
-document.querySelector('.toggle-btn').onclick = () => {
-    document.body.classList.toggle('dark-mode');
+document.querySelector('.toggle-btn').addEventListener('click', () => {
+    const isDarkMode = document.body.classList.toggle('dark-mode');
     document.querySelector('.toggle-btn').textContent =
-        document.body.classList.contains('dark-mode') ? 'Disable Dark Mode' : 'Enable Dark Mode';
-};
+        isDarkMode ? 'Disable Dark Mode' : 'Enable Dark Mode';
+});
+
+// Reusable clipboard setup function
+function setupClipboard(button) {
+    button.addEventListener('click', async function() {
+        const apiKey = this.getAttribute('data-clipboard-text');
+        const feedback = this.parentElement.querySelector('.copy-feedback');
+
+        try {
+            await navigator.clipboard.writeText(apiKey);
+            feedback.classList.add('show');
+            setTimeout(() => feedback.classList.remove('show'), 2000);
+        } catch (err) {
+            console.error('Failed to copy text: ', err);
+            // Fallback to execCommand
+            const textarea = document.createElement('textarea');
+            textarea.value = apiKey;
+            textarea.style.position = 'fixed';
+            textarea.style.opacity = 0;
+            document.body.appendChild(textarea);
+            textarea.select();
+            document.execCommand('copy');
+            document.body.removeChild(textarea);
+            // Show feedback even if fallback is used
+            feedback.classList.add('show');
+            setTimeout(() => feedback.classList.remove('show'), 2000);
+        }
+    });
+}
 
 // Collapsible sections
-// Updated clipboard function
 document.addEventListener('DOMContentLoaded', () => {
-    // Initialize clipboard functionality
-    const copyButtons = document.querySelectorAll('.copy-btn');
-
-    copyButtons.forEach(button => {
-        button.addEventListener('click', async function() {
-            const apiKey = this.getAttribute('data-clipboard-text');
-            const feedback = this.parentElement.querySelector('.copy-feedback');
-
-            try {
-                await navigator.clipboard.writeText(apiKey);
-                // Show feedback
-                feedback.classList.add('show');
-                setTimeout(() => {
-                    feedback.classList.remove('show');
-                }, 2000);
-            } catch (err) {
-                console.error('Failed to copy text: ', err);
-                // Fallback: Use a temporary textarea
-                const textarea = document.createElement('textarea');
-                textarea.value = apiKey;
-                textarea.style.position = 'fixed'; // Prevent scrolling
-                textarea.style.opacity = 0;
-                document.body.appendChild(textarea);
-                textarea.select();
-                document.execCommand('copy');
-                document.body.removeChild(textarea);
-
-                // Show feedback even if fallback is used
-                feedback.classList.add('show');
-                setTimeout(() => {
-                    feedback.classList.remove('show');
-                }, 2000);
-            }
-        });
-    });
-
-    // Re-initialize clipboard after steps are loaded
-    document.addEventListener('stepsLoaded', () => {
-        const newCopyButtons = document.querySelectorAll('.copy-btn');
-        newCopyButtons.forEach(button => {
-            button.addEventListener('click', async function() {
-                const apiKey = this.getAttribute('data-clipboard-text');
-                const feedback = this.parentElement.querySelector('.copy-feedback');
-
-                try {
-                    await navigator.clipboard.writeText(apiKey);
-                    feedback.classList.add('show');
-                    setTimeout(() => {
-                        feedback.classList.remove('show');
-                    }, 2000);
-                } catch (err) {
-                    console.error('Failed to copy text: ', err);
-                    // Fallback
-                    const textarea = document.createElement('textarea');
-                    textarea.value = apiKey;
-                    textarea.style.position = 'fixed';
-                    textarea.style.opacity = 0;
-                    document.body.appendChild(textarea);
-                    textarea.select();
-                    document.execCommand('copy');
-                    document.body.removeChild(textarea);
-
-                    feedback.classList.add('show');
-                    setTimeout(() => {
-                        feedback.classList.remove('show');
-                    }, 2000);
-                }
-            });
-        });
-    });
+    // Initialize clipboard for existing buttons
+    document.querySelectorAll('.copy-btn').forEach(setupClipboard);
 
     // Load steps
     loadSteps();
 
-    // Initialize collapsible functionality after steps are loaded
-    document.addEventListener('stepsLoaded', initializeCollapsible);
-
     // Initialize checklist functionality
     document.addEventListener('stepsLoaded', initializeChecklist);
+});
+
+// Re-initialize clipboard after steps are loaded
+document.addEventListener('stepsLoaded', () => {
+    document.querySelectorAll('.copy-btn').forEach(setupClipboard);
 });
 
 function fallbackCopyTextToClipboard(text, button) {
@@ -122,6 +83,11 @@ function fallbackCopyTextToClipboard(text, button) {
 
 async function loadSteps() {
     const stepsContainer = document.getElementById('steps-container');
+    if (!stepsContainer) {
+        console.error('Steps container not found!');
+        return;
+    }
+
     const stepFiles = [
         'steps/Register-For-Accounts.html',
         'steps/Configure-AIOStreams.html',
@@ -129,67 +95,34 @@ async function loadSteps() {
         'steps/Install-the-Nuvio-App.html'
     ];
 
-        try {
-        await Promise.all(stepFiles.map(async (file) => {
-            try {
-            const response = await fetch(file);
-            if (!response.ok) throw new Error(`Failed to load ${file}`);
-            const html = await response.text();
-            stepsContainer.insertAdjacentHTML('beforeend', html);
-        } catch (error) {
-            console.error(`Error loading ${file}:`, error);
-            stepsContainer.insertAdjacentHTML('beforeend',
-                `<div class="error">Failed to load step: ${file}</div>`);
-        }
-        }));
-    // Dispatch custom event when steps are loaded
-    document.dispatchEvent(new Event('stepsLoaded'));
+    try {
+        const responses = await Promise.all(
+            stepFiles.map(file =>
+                fetch(file)
+                    .then(response => {
+                        if (!response.ok) throw new Error(`Failed to load ${file}`);
+                        return response.text();
+                    })
+                    .then(html => {
+                        stepsContainer.insertAdjacentHTML('beforeend', html);
+                    })
+                    .catch(error => {
+                        console.error(`Error loading ${file}:`, error);
+                        stepsContainer.insertAdjacentHTML('beforeend',
+                            `<div class="error">Failed to load step: ${file}</div>`);
+                    })
+            )
+        );
+        document.dispatchEvent(new Event('stepsLoaded'));
     } catch (error) {
         console.error('Error loading steps:', error);
+        stepsContainer.insertAdjacentHTML('beforeend',
+            `<div class="error">Failed to load steps. See console for details.</div>`);
     }
 }
 
-function initializeCollapsible() {
-    const mainSteps = document.querySelectorAll('.main-step');
-
-    mainSteps.forEach(mainStep => {
-        const mainStepContent = mainStep.querySelector('.main-step-content');
-        const subSteps = mainStep.querySelectorAll('.sub-step');
-
-    subSteps.forEach(subStep => {
-        const subStepHeader = subStep.querySelector('.sub-step-header');
-            const subStepContent = subStep.querySelector('.sub-step-content');
-            const subStepSpan = subStepHeader.querySelector('span');
-
-            // Initialize state
-            subStep.classList.add('collapsed');
-            subStepContent.style.maxHeight = '0';
-            subStepHeader.addEventListener('click', function() {
-                subStep.classList.toggle('expanded');
-                subStepContent.style.maxHeight = subStep.classList.contains('expanded') ? subStepContent.scrollHeight + 'px' : '0';
-
-                 // Toggle the span icon
-                if (subStep.classList.contains('expanded')) {
-                    subStepSpan.style.transform = 'rotate(45deg)';
-                } else {
-                    subStepSpan.style.transform = 'rotate(0deg)';
-                }
-
-                // Calculate the total height of the expanded sub-steps
-                let totalHeight = 0;
-    subSteps.forEach(subStep => {
-                    if (subStep.classList.contains('expanded')) {
-                        totalHeight += subStep.querySelector('.sub-step-content').scrollHeight;
-                    }
-                });
-
-                // Adjust the height of the main-step content
-                mainStepContent.style.maxHeight = (mainStepContent.scrollHeight + totalHeight) + 'px';
-            });
-        });
-    });
-
-    // Also handle main step headers
+// Initialize collapsible behavior for main steps
+function initializeMainSteps() {
     document.querySelectorAll('.main-step-header').forEach(header => {
         const mainStep = header.parentElement;
         const mainContent = mainStep.querySelector('.main-step-content');
@@ -202,44 +135,101 @@ function initializeCollapsible() {
         mainStep.setAttribute('aria-hidden', 'true');
         mainContent.style.maxHeight = '0';
 
-        header.onclick = () => {
+        header.addEventListener('click', () => {
             const isCollapsed = mainStep.classList.toggle('collapsed');
-
-            // Update ARIA attributes
             span.setAttribute('aria-expanded', !isCollapsed);
             mainStep.setAttribute('aria-hidden', isCollapsed);
-
-             // Toggle the span icon
-        if (isCollapsed) {
-            span.style.transform = 'rotate(0deg)';
-        } else {
-            span.style.transform = 'rotate(45deg)';
-        }
-
-            // Animate content
+            span.style.transform = isCollapsed ? 'rotate(0deg)' : 'rotate(45deg)';
             animateContent(mainContent, isCollapsed);
-        };
         });
+    });
 }
+
+// Initialize collapsible behavior for sub-steps
+// Initialize collapsible behavior for sub-steps
+function initializeSubSteps() {
+    const mainSteps = document.querySelectorAll('.main-step');
+    mainSteps.forEach(mainStep => {
+        const subSteps = mainStep.querySelectorAll('.sub-step');
+        const mainContent = mainStep.querySelector('.main-step-content');
+
+        subSteps.forEach(subStep => {
+            const subStepHeader = subStep.querySelector('.sub-step-header');
+            const subStepContent = subStep.querySelector('.sub-step-content');
+            const subStepSpan = subStepHeader.querySelector('span');
+
+            // Initialize state
+            subStep.classList.add('collapsed');
+            subStepContent.style.maxHeight = '0';
+
+            subStepHeader.addEventListener('click', () => {
+                const isExpanded = subStep.classList.toggle('expanded');
+                subStepContent.style.maxHeight = isExpanded ? `${subStepContent.scrollHeight}px` : '0';
+                subStepSpan.style.transform = isExpanded ? 'rotate(45deg)' : 'rotate(0deg)';
+
+                // Recalculate the height of the main-step-content
+                let totalHeight = 0;
+                subSteps.forEach(currentSubStep => {
+                    const currentSubStepContent = currentSubStep.querySelector('.sub-step-content');
+                    if (currentSubStep.classList.contains('expanded')) {
+                        totalHeight += currentSubStepContent.scrollHeight;
+                    }
+                });
+
+                // Update the main-step-content height
+                mainContent.style.maxHeight = mainContent.scrollHeight + totalHeight + 'px';
+            });
+        });
+    });
+}
+
+// Update parent main step height
+function updateParentMainStep(subStep) {
+    const mainStep = subStep.closest('.main-step');
+    if (mainStep) {
+        const mainContent = mainStep.querySelector('.main-step-content');
+        if (mainContent) {
+            const subSteps = mainStep.querySelectorAll('.sub-step');
+            let totalHeight = 0;
+
+            subSteps.forEach(currentSubStep => {
+                if (currentSubStep.classList.contains('expanded')) {
+                    const currentSubStepContent = currentSubStep.querySelector('.sub-step-content');
+                    totalHeight += currentSubStepContent.scrollHeight;
+                }
+            });
+
+            mainContent.style.maxHeight = mainContent.scrollHeight + totalHeight + 'px';
+        }
+    }
+}
+
+// Call both functions after steps are loaded
+document.addEventListener('stepsLoaded', () => {
+    initializeMainSteps();
+    initializeSubSteps();
+});
 
 function animateContent(content, isCollapsed) {
     requestAnimationFrame(() => {
         if (isCollapsed) {
-            // Collapsing animation
+            // Collapse
             content.style.maxHeight = '0';
             content.style.paddingTop = '0';
             content.style.paddingBottom = '0';
+            content.style.overflow = 'hidden';
         } else {
-            // Expanding animation
+            // Expand
             content.style.maxHeight = 'none';
-            const fullHeight = content.scrollHeight + 'px';
+            const fullHeight = `${content.scrollHeight}px`;
             content.style.maxHeight = '0';
             content.style.paddingTop = '';
             content.style.paddingBottom = '';
-
-            setTimeout(() => {
+            content.style.overflow = 'hidden';
+            // Force reflow before setting maxHeight
+            requestAnimationFrame(() => {
                 content.style.maxHeight = fullHeight;
-            }, 10);
+            });
         }
     });
 }
@@ -257,52 +247,36 @@ function updateParentMainStep(subStep) {
 }
 
 function initializeChecklist() {
-    const subSteps = document.querySelectorAll('.sub-step');
-
-    subSteps.forEach((subStep, index) => {
+    document.querySelectorAll('.sub-step').forEach((subStep, index) => {
         const checklistItems = subStep.querySelectorAll('.checklist-item input[type="checkbox"]');
         const subStepHeader = subStep.querySelector('.sub-step-header');
         const subStepContent = subStep.querySelector('.sub-step-content');
         const subStepSpan = subStepHeader.querySelector('span');
-        const mainStep = subStep.closest('.main-step');
-        const mainStepContent = mainStep.querySelector('.main-step-content');
 
-        checklistItems.forEach(checklistItem => {
-            checklistItem.addEventListener('change', function() {
-                let allChecked = true;
-                checklistItems.forEach(item => {
-                    if (!item.checked) {
-                        allChecked = false;
-                    }
-                });
+        // Skip if no checklist items
+        if (checklistItems.length === 0) return;
+
+        checklistItems.forEach(item => {
+            item.addEventListener('change', () => {
+                const allChecked = Array.from(checklistItems).every(item => item.checked);
 
                 if (allChecked) {
                     subStepHeader.classList.add('checked');
-                    // Auto-collapse the current sub-step
+                    // Collapse current sub-step
                     subStep.classList.remove('expanded');
                     subStepContent.style.maxHeight = '0';
                     subStepSpan.style.transform = 'rotate(0deg)';
 
-                    // Open the next sub-step if it exists
-                    if (index < subSteps.length - 1) {
-                        const nextSubStep = subSteps[index + 1];
+                    // Open next sub-step if it exists
+                    const nextSubStep = document.querySelectorAll('.sub-step')[index + 1];
+                    if (nextSubStep) {
                         const nextSubStepHeader = nextSubStep.querySelector('.sub-step-header');
                         const nextSubStepContent = nextSubStep.querySelector('.sub-step-content');
                         const nextSubStepSpan = nextSubStepHeader.querySelector('span');
                         nextSubStep.classList.add('expanded');
-                        nextSubStepContent.style.maxHeight = nextSubStepContent.scrollHeight + 'px';
+                        nextSubStepContent.style.maxHeight = `${nextSubStepContent.scrollHeight}px`;
                         nextSubStepSpan.style.transform = 'rotate(45deg)';
-
-                        // Calculate the total height of the expanded sub-steps
-                        let totalHeight = 0;
-                        subSteps.forEach(subStep => {
-                            if (subStep.classList.contains('expanded')) {
-                                totalHeight += subStep.querySelector('.sub-step-content').scrollHeight;
-                            }
-                        });
-
-                        // Adjust the height of the main-step content
-                        mainStepContent.style.maxHeight = (mainStepContent.scrollHeight + totalHeight) + 'px';
+                        updateParentMainStep(nextSubStep);
                     }
                 } else {
                     subStepHeader.classList.remove('checked');
@@ -311,4 +285,3 @@ function initializeChecklist() {
         });
     });
 }
-

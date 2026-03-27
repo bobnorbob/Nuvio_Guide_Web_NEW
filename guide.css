@@ -1,24 +1,41 @@
 :root {
-    /* Colors */
-    --bg: #f5f5f5;
+    /* Existing variables */
+    --bg: #a6a6a6;
     --text: #333333;
     --accent: #007bff;
     --border-color: #e0e0e0;
-    --header-bg: #ffffff;
+    --header-bg: #e8e8e8;
     --header-text: #212529;
     --step-bg: #ffffff;
     --step-border: #e0e0e0;
     --sub-step-bg: #f9f9f9;
-    --hover-bg: #f0f0f0;
+    --hover-bg: #d2d2d2;
     --tip-bg: #6493aa;
     --tip-border: #2a5a6a;
-    --tip-color: #212529;
+    --tip-color: #ffffff;
     --success: #28a745;
     --warning: #ffc107;
     --error: #dc3545;
     --focus-outline: 2px solid #007bff;
-    --box-shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.1);
-    --box-shadow-md: 0 2px 10px rgba(0, 0, 0, 0.1);
+
+    /* Light mode colors for utility classes */
+    --note-bg: #d1ecf1;
+    --note-color: #17a2b8;
+    --note-border: #bee5eb;
+    --error-bg: #f8d7da;
+    --error-border: #f5c6cb;
+    --info-bg: #e7f5ff;
+    --info-border: #b8daff;
+    --success-bg: #d4edda;
+    --success-border: #c3e6cb;
+    --warning-bg: #fff3cd;
+    --warning-border: #ffeeba;
+    --highlight-bg: #fff9db;
+    --highlight-border: #ffd33d;
+    --quote-color: #6c757d;
+    --quote-border: #dee2e6;
+    --code-bg: #f8f9fa;
+    --code-border: #dee2e6;
 
     /* Typography */
     --font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -39,11 +56,12 @@
 }
 
 body.dark-mode {
+    /* Existing dark mode variables */
     --bg: #121212;
     --text: #e0e0e0;
     --accent: #4a90e2;
     --border-color: #444;
-    --header-bg: #1e1e1e;
+    --header-bg: #282828;
     --header-text: #e0e0e0;
     --step-bg: #1e1e1e;
     --step-border: #444;
@@ -53,6 +71,25 @@ body.dark-mode {
     --tip-border: #0056b3;
     --tip-color: #e0e0e0;
     --focus-outline: 2px solid #4a90e2;
+
+    /* Dark mode colors for utility classes */
+    --note-bg: #1e3a4e;
+    --note-color: #a0d8ef;
+    --note-border: #2a526a;
+    --error-bg: #2d1f1f;
+    --error-border: #5a2d2d;
+    --info-bg: #1a2b4c;
+    --info-border: #2a4b7c;
+    --success-bg: #1d352b;
+    --success-border: #285348;
+    --warning-bg: #3d331f;
+    --warning-border: #7a652d;
+    --highlight-bg: #3d331f;
+    --highlight-border: #b89a3d;
+    --quote-color: #a0a0a0;
+    --quote-border: #505050;
+    --code-bg: #2d2d2d;
+    --code-border: #444;
 }
 
 /* ===== Base Styles ===== */
@@ -60,7 +97,6 @@ body {
     background: var(--bg);
     color: var(--text);
     font-family: var(--font-family);
-    margin: var(--spacing-lg);
     line-height: 1.6;
     font-size: var(--font-size-base);
     margin: var(--spacing-sm) 0 var(--spacing-md) 0;
@@ -334,18 +370,6 @@ body.dark-mode .api-key {
     color: var(--text);
 }
 
-/* ===== Tip Styling ===== */
-.tip {
-    font-style: italic;
-    color: var(--tip-color);
-    padding: var(--spacing-sm);
-    background: var(--tip-bg) !important;
-    border-left: 4px solid var(--tip-border);
-    margin-top: var(--spacing-sm);
-    margin-bottom: var(--spacing-md);
-    border-radius: 0 2px 2px 0;
-}
-
 /* ===== Link Styling ===== */
 a {
     color: var(--accent);
@@ -353,88 +377,98 @@ a {
     transition: color var(--transition-duration) var(--transition-timing);
 }
 
+/* ===== Link Hover Styling ===== */
 a:hover {
     text-decoration: underline;
     color: #0056b3;
 }
 
-/* ===== Error Styling ===== */
+/* ===== Tip Styling ===== */
+.tip {
+    font-style: italic;
+    color: var(--tip-color);
+    padding: var(--spacing-xs);
+    background: var(--tip-bg) !important;
+    border-left: 4px solid var(--tip-border);
+    margin-top: var(--spacing-sm) !important;
+    margin-bottom: var(--spacing-sm) !important;
+    border-radius: 0 2px 2px 0;
+}
+
 .error {
     color: var(--error);
-    background-color: #f8d7da;
-    border: 1px solid #f5c6cb;
+    background-color: var(--error-bg);
+    border: 1px solid var(--error-border);
     padding: var(--spacing-sm);
     margin: var(--spacing-sm) 0;
     border-radius: 4px;
 }
 
-/* ===== Info Styling ===== */
 .info {
     color: var(--accent);
-    background-color: #e7f5ff;
-    border: 1px solid #b8daff;
+    background-color: var(--info-bg);
+    border: 1px solid var(--info-border);
     padding: var(--spacing-sm);
     margin: var(--spacing-sm) 0;
     border-radius: 4px;
 }
 
-/* ===== Success Styling ===== */
 .success {
     color: var(--success);
-    background-color: #d4edda;
-    border: 1px solid #c3e6cb;
+    background-color: var(--success-bg);
+    border: 1px solid var(--success-border);
     padding: var(--spacing-sm);
     margin: var(--spacing-sm) 0;
     border-radius: 4px;
 }
 
-/* ===== Warning Styling ===== */
 .warning {
     color: var(--warning);
-    background-color: #fff3cd;
-    border: 1px solid #ffeeba;
+    background-color: var(--warning-bg);
+    border: 1px solid var(--warning-border);
     padding: var(--spacing-sm);
     margin: var(--spacing-sm) 0;
     border-radius: 4px;
 }
 
-/* ===== Note Styling ===== */
 .note {
-    color: #17a2b8;
-    background-color: #d1ecf1;
-    border: 1px solid #bee5eb;
+    color: var(--note-color);
+    background-color: var(--note-bg);
+    border: 1px solid var(--note-border);
     padding: var(--spacing-sm);
     margin: var(--spacing-sm) 0;
     border-radius: 4px;
 }
 
-/* ===== Highlight Styling ===== */
 .highlight {
-    background-color: #fff9db;
-    border-left: 4px solid #ffd33d;
+    background-color: var(--highlight-bg);
+    border-left: 4px solid var(--highlight-border);
     padding: var(--spacing-sm);
     margin: var(--spacing-sm) 0;
     border-radius: 0 2px 2px 0;
 }
 
-/* ===== Quote Styling ===== */
 .quote {
     font-style: italic;
-    color: #6c757d;
-    border-left: 4px solid #dee2e6;
+    color: var(--quote-color);
+    border-left: 4px solid var(--quote-border);
     padding-left: var(--spacing-md);
     margin: var(--spacing-md) 0;
 }
 
-/* ===== Code Styling ===== */
 .code {
     font-family: 'Courier New', monospace;
-    background-color: #f8f9fa;
-    border: 1px solid #dee2e6;
+    background-color: var(--code-bg);
+    border: 1px solid var(--code-border);
     padding: var(--spacing-sm);
     margin: var(--spacing-sm) 0;
     border-radius: 4px;
     overflow-x: auto;
+}
+
+/* Reset paragraph margins inside utility classes */
+.tip p, .note p, .warning p, .error p, .info p, .success p, .highlight p, .quote p, .code p {
+    margin: 0 !important;
 }
 
 /* ===== Focus Styles ===== */
@@ -488,9 +522,9 @@ a:hover {
 
 /* ===== Checked State for Sub-Step Headers ===== */
 .sub-step-header.checked {
-    background: var(--success); /* Change this to your desired color */
+    background: var(--success);
 }
 
 .sub-step-header.checked:hover {
-    background: #218838; /* Change this to your desired hover color */
+    background: #218838;
 }
