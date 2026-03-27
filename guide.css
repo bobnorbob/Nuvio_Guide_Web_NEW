@@ -304,6 +304,11 @@ h1 {
 }
 
 /* ===== Copy-to-Clipboard ===== */
+.inline-copy-container {
+    display: inline-flex;
+    align-items: center;
+}
+
 .copy-to-clipboard {
     display: inline-flex;
     align-items: center;
@@ -311,15 +316,16 @@ h1 {
     border: 1px solid var(--border-color);
     border-radius: 4px;
     padding: var(--spacing-xs) var(--spacing-sm);
-    height: 2rem;
-    width: auto;
+    height: 1.75rem;
+    margin: 0 var(--spacing-xs);
+    vertical-align: middle;
 }
 
-.api-key {
-    font-family: 'Courier New', monospace;
-    margin-right: var(--spacing-sm);
-    color: var(--text);
-    font-size: 0.9em;
+.api-key-description {
+    font-size: 0.85em;
+    color: var(--quote-color);
+    font-style: italic;
+    margin-left: var(--spacing-xs);
 }
 
 .copy-btn {
