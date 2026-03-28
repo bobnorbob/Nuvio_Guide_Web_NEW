@@ -301,3 +301,24 @@ function initializeChecklist() {
         });
     });
 }
+
+// Initialize screenshot toggles
+document.querySelectorAll('.screenshot-toggle').forEach(toggle => {
+    toggle.addEventListener('click', () => {
+        const container = toggle.nextElementSibling;
+        const isExpanded = container.classList.toggle('expanded');
+        const icon = toggle.querySelector('.toggle-icon');
+        const text = toggle.querySelector('.toggle-text');
+
+        // Update UI
+        toggle.setAttribute('aria-expanded', isExpanded);
+        icon.style.transform = isExpanded ? 'rotate(45deg)' : 'rotate(0deg)';
+        text.textContent = isExpanded ? 'Hide Screenshot' : 'Show Screenshot';
+
+        // Recalculate parent container height
+        if (container.closest('.sub-step-content')) {
+            const subStep = container.closest('.sub-step');
+            updateParentMainStep(subStep);
+        }
+    });
+});

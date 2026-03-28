@@ -310,6 +310,75 @@ h1 {
     margin-right: var(--spacing-sm);
 }
 
+/* Reduce margin-bottom for checklist items followed by a screenshot section */
+.checklist-item + .screenshot-section {
+    margin-top: -1rem; /* Adjust this value to reduce the space */
+}
+
+/* Reduce margin-bottom for checklist items preceded by a screenshot section */
+.screenshot-section + .checklist-item {
+    margin-top: +0.25rem; /* Adjust this value to reduce the space */
+}
+
+/* Screenshot section layout */
+.screenshot-section {
+    margin-left: 40px; /* Align with checklist label */
+    margin-top: 0;
+    width: calc(100% - 40px); /* Full width minus the offset */
+}
+
+/* Screenshot toggle button */
+.screenshot-toggle {
+    background: none;
+    border: none;
+    color: var(--accent);
+    cursor: pointer;
+    font-size: 0.9em;
+    padding: 0px 8px;
+    border-radius: 4px;
+    transition: color 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    margin-bottom: var(--spacing-xs);
+}
+
+.screenshot-toggle:hover {
+    color: #0056b3;
+    background: var(--hover-bg);
+}
+
+.screenshot-toggle .toggle-icon {
+    font-weight: bold;
+    transition: transform 0.2s;
+}
+
+/* Screenshot container */
+.screenshot-container {
+    width: 100%;
+    overflow: hidden;
+    transition: max-height 0.3s ease, padding 0.2s ease;
+    max-height: 0;
+    padding: 0;
+}
+
+.screenshot-container.expanded {
+    max-height: 1000px;
+    padding: var(--spacing-sm) 0;
+}
+
+.screenshot-container img {
+    max-width: 100%;
+    border-radius: 4px;
+    border: 1px solid var(--border-color);
+    box-shadow: var(--box-shadow-sm);
+}
+
+/* Rotate icon when expanded */
+.screenshot-toggle[aria-expanded="true"] .toggle-icon {
+    transform: rotate(45deg);
+}
+
 /* ==== Copy-to-Clipboard Function ==== */
 .copy-container {
     display: flex;
