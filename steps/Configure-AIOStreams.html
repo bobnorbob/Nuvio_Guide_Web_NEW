@@ -2,5 +2,65 @@
     <div class="main-step-header">Configure AIOStreams <span>+</span></div>
     <div class="main-step-content">
         <div class="body">
-            With all accounts created and API keys ready, we can proceed to...
+            With all accounts created and API keys ready, we can proceed to seting up AIOStreams.
         </div>
+
+        <!-- Customizing Addons -->
+        <div class="sub-step">
+            <div class="sub-step-header">Load Template <span>+</span></div>
+            <div class="sub-step-content">
+                <div class="body">
+                    <p class="body"><i>AIOStreams manages your streaming sources and preferences.</i></p>
+                </div>
+                <div class="checklist-item">
+                    <input type="checkbox" id="Configure-AIOStreams-Load-Template-0">
+                    <label for="Configure-AIOStreams-Load-Template-0">Go to <a href="https://aiostreams.viren070.me/stremio/configure" target="_blank" aria-label="Go to AIOStreams (opens in new tab)">AIOStreams</a></label>
+                </div>
+                <div class="checklist-item">
+                    <input type="checkbox" id="Configure-AIOStreams-Load-Template-1">
+                    <label for="Configure-AIOStreams-Load-Template-1">Under <b>Templates</b>, select <b>Tamtaro Complete SEL Setup</b> and click <b>Load Template</b></label>
+                </div>
+                <div class="checklist-item">
+                    <input type="checkbox" id="Configure-AIOStreams-Load-Template-2">
+                    <label for="Configure-AIOStreams-Load-Template-2">Choose <b>Real-Debrid</b> as your debrid service and click <b>Save</b></label>
+                </div>
+                <div class="checklist-item">
+                    <input type="checkbox" id="Configure-AIOStreams-Load-Template-3">
+                    <label for="Configure-AIOStreams-Load-Template-3">Leave default settings and click <b>Next</b></label>
+                </div>
+                <div class="checklist-item">
+                    <input type="checkbox" id="Configure-AIOStreams-Load-Template-4">
+                    <label for="Configure-AIOStreams-Load-Template-4">Enter your <b>Real-Debrid API Key</b>, <b>TMDB API Key</b>, and <b>TVDB API Key</b></label>
+                </div>
+                <div class="checklist-item">
+                    <input type="checkbox" id="Configure-AIOStreams-Load-Template-5">
+                    <label for="Configure-AIOStreams-Load-Template-5">Click <b>Load Template</b></label>
+                </div>
+            </div>
+        </div>
+        <div class="sub-step">
+            <div class="sub-step-header">Customizing Addons <span>+</span></div>
+            <div class="sub-step-content">
+                <div class="body">
+                    <p class="body"><i></i></p>
+                </div>
+                <div class="checklist-item">
+                    <input type="checkbox" id="Configure-AIOStreams-Configure-0">
+                    <label for="Configure-AIOStreams-Configure-0">Go to the Addons tab (puzzle piece icon)</label>
+                </div>
+                <div class="checklist-item">
+                    <input type="checkbox" id="Configure-AIOStreams-Configure-1">
+                    <label for="Configure-AIOStreams-Configure-1">Set <b>Fetching Strategy</b> to <b>Dynamic</b></label>
+                </div>
+                <div class="checklist-item">
+                    <input type="checkbox" id="Configure-AIOStreams-Configure-2">
+                    <label for="Configure-AIOStreams-Configure-2">In the <b>Exit Strategy</b> field, paste the following to prioritize high-quality streams and exclude Russian audio (I've found some streams default to a Russian overdub audio track. You can easily switch it to the original language, but it's annoying and this setup helps to minimize that):</label>
+                </div>
+                <div class="copy-container">
+                    <span class="api-key">count(queriedAddons)>=3 and (count(visualTag(resolution(cached(negate(language(negate(regexMatched(totalStreams,"Bad"),totalStreams),'Russian'),language(negate(regexMatched(totalStreams,"Bad"),totalStreams),originalLanguage))),"2160p"),"DV","HDR","HDR10+"))>=2 or count(visualTag(resolution(cached(negate(language(negate(regexMatched(totalStreams,"Bad"),totalStreams),'Russian'),language(negate(regexMatched(totalStreams,"Bad"),totalStreams),originalLanguage))),"2160p","1440p","1080p"),"DV","HDR","HDR10+"))>=5 or count(quality(visualTag(resolution(cached(negate(language(totalStreams,'Russian'),language(totalStreams,originalLanguage))),"2160p","1440p","1080p"),"DV","HDR","HDR10+"),"Bluray REMUX","Bluray","WEB-DL"))>=10 or totalTimeTaken>7000)</span>
+                    <button class="copy-btn" data-clipboard-text="t0-free-rpdb">Copy API Key</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
