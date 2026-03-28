@@ -312,9 +312,11 @@ h1 {
 
 /* ==== Copy-to-Clipboard Function ==== */
 .copy-container {
-    display: inline-flex;
+    display: flex;
     align-items: center;
-    margin-left: 10px;
+    margin: var(--spacing-sm) 0;
+    flex-wrap: wrap;
+    gap: var(--spacing-sm);
 }
 
 .copy-btn {
@@ -326,7 +328,7 @@ h1 {
     cursor: pointer;
     font-size: 0.9em;
     transition: background var(--transition-duration) var(--transition-timing);
-    width: 120px; /* Fixed width */
+    width: 80px; /* Fixed width */
     text-align: center;
 }
 
@@ -334,11 +336,13 @@ h1 {
     font-family: 'Courier New', monospace;
     color: var(--text);
     font-size: 0.9em;
+    word-break: break-all;
+    max-width: 100%;
     background: var(--step-bg);
-    border: var(--accent);
-    border-radius: 4px;
-    padding: 2px 5px;
+    border: 1px solid var(--border-color);
+    padding: var(--spacing-xs);
     margin-right: 5px;
+    line-height: 1.4;
 }
 
 .copy-btn:hover {
@@ -383,6 +387,8 @@ body.dark-mode .copy-to-clipboard {
 
 body.dark-mode .api-key {
     color: var(--text);
+    background: var(--sub-step-bg);
+    border: 1px solid var(--border-color);
 }
 
 /* ===== Link Styling ===== */
@@ -490,8 +496,11 @@ a:hover {
 /* ===== Focus Styles ===== */
 .toggle-btn:focus,
 .main-step-header:focus,
-.sub-step-header:focus {
+.sub-step-header:focus
+.copy-btn:focus,
+.checklist-item input[type="checkbox"]:focus {
     outline: var(--focus-outline);
+    outline-offset: 2px;
 }
 
 /* ===== Active Styles ===== */
@@ -504,7 +513,7 @@ a:hover {
 /* ===== Responsive Design ===== */
 @media (max-width: 768px) {
     .container {
-        padding: var(--spacing-md);
+        padding: var(--spacing-md) var(--spacing-sm);
     }
 
     .main-step-header,

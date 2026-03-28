@@ -38,32 +38,25 @@ function setupClipboard(button) {
 }
 
 function fallbackCopyTextToClipboard(text, button) {
-    // Create a temporary textarea element
     const textarea = document.createElement('textarea');
     textarea.value = text;
-    textarea.setAttribute('readonly', '');
-    textarea.style.position = 'absolute';
-    textarea.style.left = '-9999px';
+    textarea.style.position = 'fixed';
+    textarea.style.opacity = 0;
     document.body.appendChild(textarea);
-
-    // Select and copy the text
     textarea.select();
+
     try {
-        const successful = document.execCommand('copy');
-        if (successful) {
-            const originalText = button.textContent;
-            button.textContent = 'Copied!';
-            setTimeout(() => {
-                button.textContent = originalText;
-            }, 2000);
-        } else {
-            console.error('Fallback: Could not copy text');
-        }
+        document.execCommand('copy');
+        // Reuse the success logic from setupClipboard
+        const originalText = button.textContent;
+        button.textContent = 'Copied!';
+        setTimeout(() => {
+            button.textContent = originalText;
+        }, 2000);
     } catch (err) {
         console.error('Fallback: Could not copy text: ', err);
     }
 
-    // Remove the temporary textarea element
     document.body.removeChild(textarea);
 }
 
@@ -168,6 +161,7 @@ function initializeSubSteps() {
                 const isExpanded = subStep.classList.toggle('expanded');
                 subStepContent.style.maxHeight = isExpanded ? `${subStepContent.scrollHeight}px` : '0';
                 subStepSpan.style.transform = isExpanded ? 'rotate(45deg)' : 'rotate(0deg)';
+                subStepHeader.setAttribute('aria-expanded', isExpanded);
 
                 // Recalculate the height of the main-step-content
                 let totalHeight = 0;

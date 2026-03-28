@@ -1,5 +1,5 @@
 <div class="main-step">
-    <div class="main-step-header">Configure AIOStreams <span>+</span></div>
+    <div class="main-step-header" aria-label="Toggle Configure AIOStreams section" aria-expanded="false">Configure AIOStreams <span>+</span></div>
     <div class="main-step-content">
         <div class="body">
             With all accounts created and API keys ready, we can proceed to seting up AIOStreams.
@@ -7,7 +7,7 @@
 
         <!-- Customizing Addons -->
         <div class="sub-step">
-            <div class="sub-step-header">Load Template <span>+</span></div>
+            <div class="sub-step-header" aria-expanded="false">Load Template <span>+</span></div>
             <div class="sub-step-content">
                 <div class="body">
                     <p class="body"><i>AIOStreams manages your streaming sources and preferences.</i></p>
@@ -39,7 +39,7 @@
             </div>
         </div>
         <div class="sub-step">
-            <div class="sub-step-header">Customizing Addons <span>+</span></div>
+            <div class="sub-step-header" aria-label="Toggle Customizing Addons section" aria-expanded="false">Customizing Addons <span>+</span></div>
             <div class="sub-step-content">
                 <div class="body">
                     <p class="body"><i></i></p>
@@ -57,8 +57,8 @@
                     <label for="Configure-AIOStreams-Configure-2">In the <b>Exit Strategy</b> field, paste the following to prioritize high-quality streams and exclude Russian audio (I've found some streams default to a Russian overdub audio track. You can easily switch it to the original language, but it's annoying and this setup helps to minimize that):</label>
                 </div>
                 <div class="copy-container">
-                    <span class="api-key">count(queriedAddons)>=3 and (count(visualTag(resolution(cached(negate(language(negate(regexMatched(totalStreams,"Bad"),totalStreams),'Russian'),language(negate(regexMatched(totalStreams,"Bad"),totalStreams),originalLanguage))),"2160p"),"DV","HDR","HDR10+"))>=2 or count(visualTag(resolution(cached(negate(language(negate(regexMatched(totalStreams,"Bad"),totalStreams),'Russian'),language(negate(regexMatched(totalStreams,"Bad"),totalStreams),originalLanguage))),"2160p","1440p","1080p"),"DV","HDR","HDR10+"))>=5 or count(quality(visualTag(resolution(cached(negate(language(totalStreams,'Russian'),language(totalStreams,originalLanguage))),"2160p","1440p","1080p"),"DV","HDR","HDR10+"),"Bluray REMUX","Bluray","WEB-DL"))>=10 or totalTimeTaken>7000)</span>
-                    <button class="copy-btn" data-clipboard-text="t0-free-rpdb">Copy Exit Strategy</button>
+                    <span class="api-key">count(queriedAddons)&gt;=3 and (count(visualTag(resolution(cached(negate(language(negate(regexMatched(totalStreams,&quot;Bad&quot;),totalStreams),&quot;Russian&quot;),language(negate(regexMatched(totalStreams,&quot;Bad&quot;),totalStreams),originalLanguage))),&quot;2160p&quot;),&quot;DV&quot;,&quot;HDR&quot;,&quot;HDR10+&quot;))&gt;=2 or count(visualTag(resolution(cached(negate(language(negate(regexMatched(totalStreams,&quot;Bad&quot;),totalStreams),&quot;Russian&quot;),language(negate(regexMatched(totalStreams,&quot;Bad&quot;),totalStreams),originalLanguage))),&quot;2160p&quot;,&quot;1440p&quot;,&quot;1080p&quot;),&quot;DV&quot;,&quot;HDR&quot;,&quot;HDR10+&quot;))&gt;=5 or count(quality(visualTag(resolution(cached(negate(language(totalStreams,&quot;Russian&quot;),language(totalStreams,originalLanguage))),&quot;2160p&quot;,&quot;1440p&quot;,&quot;1080p&quot;),&quot;DV&quot;,&quot;HDR&quot;,&quot;HDR10+&quot;),&quot;Bluray REMUX&quot;,&quot;Bluray&quot;,&quot;WEB-DL&quot;))&gt;=10 or totalTimeTaken&gt;7000)</span>
+                    <button class="copy-btn" data-clipboard-text='count(queriedAddons)>=3 and (count(visualTag(resolution(cached(negate(language(negate(regexMatched(totalStreams,"Bad"),totalStreams),"Russian"),language(negate(regexMatched(totalStreams,"Bad"),totalStreams),originalLanguage))),"2160p","DV","HDR","HDR10+"))>=2 or count(visualTag(resolution(cached(negate(language(negate(regexMatched(totalStreams,"Bad"),totalStreams),"Russian"),language(negate(regexMatched(totalStreams,"Bad"),totalStreams),originalLanguage))),"2160p","1440p","1080p"),"DV","HDR","HDR10+"))>=5 or count(quality(visualTag(resolution(cached(negate(language(totalStreams,"Russian"),language(totalStreams,originalLanguage))),"2160p","1440p","1080p"),"DV","HDR","HDR10+"),"Bluray REMUX","Bluray","WEB-DL"))>=10 or totalTimeTaken>7000'title="Copy Exit Strategy">Copy</button>
                 </div>
                 <div class="body">
                     <p class="body"><i></i></p>
