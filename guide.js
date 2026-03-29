@@ -71,6 +71,43 @@ document.addEventListener('DOMContentLoaded', () => {
     // Initialize checklist functionality
     document.addEventListener('stepsLoaded', initializeChecklist);
 
+    document.addEventListener('stepsLoaded', () => {
+    document.querySelectorAll('.screenshot-toggle').forEach(toggle => {
+        toggle.addEventListener('click', () => {
+            const container = toggle.nextElementSibling;
+            const isExpanded = container.classList.toggle('expanded');
+            const icon = toggle.querySelector('.toggle-icon');
+            const text = toggle.querySelector('.toggle-text');
+
+            // Update UI
+            toggle.setAttribute('aria-expanded', isExpanded);
+            icon.style.transform = isExpanded ? 'rotate(45deg)' : 'rotate(0deg)';
+            text.textContent = isExpanded ? 'Hide Screenshot' : 'Show Screenshot';
+
+            // Use a small timeout to allow the DOM to update
+            setTimeout(() => {
+                if (container.closest('.sub-step-content')) {
+                    const subStepContent = container.closest('.sub-step-content');
+                    subStepContent.style.maxHeight = 'none';
+                    subStepContent.style.maxHeight = `${subStepContent.scrollHeight}px`;
+
+                    const subStep = container.closest('.sub-step');
+                    updateParentMainStep(subStep);
+
+                    const mainStep = subStep.closest('.main-step');
+                    if (mainStep) {
+                        const mainContent = mainStep.querySelector('.main-step-content');
+                        if (mainContent) {
+                            mainContent.style.maxHeight = 'none';
+                            mainContent.style.maxHeight = `${mainContent.scrollHeight}px`;
+                        }
+                    }
+                }
+            }, 50); // Small delay to allow DOM update
+        });
+    });
+});
+    
     // Re-initialize clipboard after steps are loaded
     document.addEventListener('stepsLoaded', () => {
         document.querySelectorAll('.copy-btn').forEach(setupClipboard);
@@ -210,22 +247,22 @@ function animateContent(content, isCollapsed) {
 }
 
 function updateParentMainStep(subStep) {
+    console.log('updateParentMainStep called'); // Debugging log
     const mainStep = subStep.closest('.main-step');
     if (mainStep) {
         const mainContent = mainStep.querySelector('.main-step-content');
         if (mainContent) {
-            const subSteps = mainStep.querySelectorAll('.sub-step');
-            let totalHeight = 0;
-
-            subSteps.forEach(currentSubStep => {
-                if (currentSubStep.classList.contains('expanded')) {
-                    const currentSubStepContent = currentSubStep.querySelector('.sub-step-content');
-                    totalHeight += currentSubStepContent.scrollHeight;
-                }
-            });
-
-            mainContent.style.maxHeight = mainContent.scrollHeight + totalHeight + 'px';
-        }
+            console.log('Updating mainContent height'); // Debugging log
+            // Reset max-height to get the correct scrollHeight
+            mainContent.style.maxHeight = 'none';
+            console.log('Current scrollHeight:', mainContent.scrollHeight); // Debugging log
+            // Set max-height to the scrollHeight
+            mainContent.style.maxHeight = `${mainContent.scrollHeight}px`;
+        } else {
+            console.log('mainContent not found'); // Debugging log
+        }    
+    } else {
+        console.log('mainStep not found'); // Debugging log
     }
 }
 
@@ -301,24 +338,3 @@ function initializeChecklist() {
         });
     });
 }
-
-// Initialize screenshot toggles
-document.querySelectorAll('.screenshot-toggle').forEach(toggle => {
-    toggle.addEventListener('click', () => {
-        const container = toggle.nextElementSibling;
-        const isExpanded = container.classList.toggle('expanded');
-        const icon = toggle.querySelector('.toggle-icon');
-        const text = toggle.querySelector('.toggle-text');
-
-        // Update UI
-        toggle.setAttribute('aria-expanded', isExpanded);
-        icon.style.transform = isExpanded ? 'rotate(45deg)' : 'rotate(0deg)';
-        text.textContent = isExpanded ? 'Hide Screenshot' : 'Show Screenshot';
-
-        // Recalculate parent container height
-        if (container.closest('.sub-step-content')) {
-            const subStep = container.closest('.sub-step');
-            updateParentMainStep(subStep);
-        }
-    });
-});

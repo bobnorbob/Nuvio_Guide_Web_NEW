@@ -357,15 +357,21 @@ h1 {
 .screenshot-container {
     width: 100%;
     overflow: hidden;
-    transition: max-height 0.3s ease, padding 0.2s ease;
+    transition: max-height var(--transition-duration) var(--transition-timing),
+                padding-top var(--transition-duration) var(--transition-timing),
+                padding-bottom var(--transition-duration) var(--transition-timing);
     max-height: 0;
-    padding: 0;
+    padding-top: 0;
+    padding-bottom: 0;
 }
 
 .screenshot-container.expanded {
     max-height: 1000px;
-    padding: var(--spacing-sm) 0;
-}
+    padding-top: var(--spacing-sm);
+    padding-bottom: var(--spacing-sm);
+    transition: max-height var(--transition-duration) var(--transition-timing),
+                padding-top var(--transition-duration) var(--transition-timing),
+                padding-bottom var(--transition-duration) var(--transition-timing);}
 
 .screenshot-container img {
     max-width: 100%;
