@@ -366,12 +366,9 @@ h1 {
 }
 
 .screenshot-container.expanded {
-    max-height: 1000px;
     padding-top: var(--spacing-sm);
     padding-bottom: var(--spacing-sm);
-    transition: max-height var(--transition-duration) var(--transition-timing),
-                padding-top var(--transition-duration) var(--transition-timing),
-                padding-bottom var(--transition-duration) var(--transition-timing);}
+}    
 
 .screenshot-container img {
     max-width: 100%;

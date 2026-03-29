@@ -84,6 +84,13 @@ document.addEventListener('DOMContentLoaded', () => {
             icon.style.transform = isExpanded ? 'rotate(45deg)' : 'rotate(0deg)';
             text.textContent = isExpanded ? 'Hide Screenshot' : 'Show Screenshot';
 
+            if (isExpanded) {
+                container.style.maxHeight = 'none'; // Reset max-height to get the correct scrollHeight
+                container.style.maxHeight = `${container.scrollHeight}px`;
+            } else {
+                container.style.maxHeight = '0';
+            }
+
             // Use a small timeout to allow the DOM to update
             setTimeout(() => {
                 if (container.closest('.sub-step-content')) {
@@ -103,7 +110,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         }
                     }
                 }
-            }, 50); // Small delay to allow DOM update
+            }, 50);
         });
     });
 });
