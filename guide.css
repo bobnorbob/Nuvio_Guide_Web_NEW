@@ -226,7 +226,8 @@ h1 {
     padding-bottom: var(--spacing-md);
     border-top: none;
     overflow: hidden;
-    transition: max-height var(--transition-duration) var(--transition-timing);
+    transition: max-height var(--transition-duration) var(--transition-timing),
+                padding var(--transition-duration) var(--transition-timing);
 }
 
 .sub-step-content {
