@@ -72,41 +72,53 @@ document.addEventListener('DOMContentLoaded', () => {
     document.addEventListener('stepsLoaded', initializeChecklist);
 
     document.addEventListener('stepsLoaded', () => {
-    document.querySelectorAll('.screenshot-toggle').forEach(toggle => {
-        toggle.addEventListener('click', () => {
-            const container = toggle.nextElementSibling;
-            const isExpanded = container.classList.toggle('expanded');
-            const icon = toggle.querySelector('.toggle-icon');
-            const text = toggle.querySelector('.toggle-text');
+        document.querySelectorAll('.screenshot-toggle').forEach(toggle => {
+            toggle.addEventListener('click', () => {
+                const container = toggle.nextElementSibling;
+                const isExpanded = container.classList.toggle('expanded');
+                const icon = toggle.querySelector('.toggle-icon');
+                const text = toggle.querySelector('.toggle-text');
 
-            // Update UI
-            toggle.setAttribute('aria-expanded', isExpanded);
-            icon.style.transform = isExpanded ? 'rotate(45deg)' : 'rotate(0deg)';
-            text.textContent = isExpanded ? 'Hide Screenshot' : 'Show Screenshot';
+                // Update UI
+                toggle.setAttribute('aria-expanded', isExpanded);
+                icon.style.transform = isExpanded ? 'rotate(45deg)' : 'rotate(0deg)';
+                text.textContent = isExpanded ? 'Hide Screenshot' : 'Show Screenshot';
 
-            // Use a small timeout to allow the DOM to update
-            setTimeout(() => {
-                if (container.closest('.sub-step-content')) {
-                    const subStepContent = container.closest('.sub-step-content');
-                    subStepContent.style.maxHeight = 'none';
-                    subStepContent.style.maxHeight = `${subStepContent.scrollHeight}px`;
+                // Use a small timeout to allow the DOM to update
+                setTimeout(() => {
+                    if (container.closest('.sub-step-content')) {
+                        const subStepContent = container.closest('.sub-step-content');
+                        subStepContent.style.maxHeight = 'none';
+                        subStepContent.style.maxHeight = `${subStepContent.scrollHeight}px`;
 
-                    const subStep = container.closest('.sub-step');
-                    updateParentMainStep(subStep);
+                        const subStep = container.closest('.sub-step');
+                        const mainStep = subStep.closest('.main-step');
 
-                    const mainStep = subStep.closest('.main-step');
-                    if (mainStep) {
-                        const mainContent = mainStep.querySelector('.main-step-content');
-                        if (mainContent) {
+                        if (mainStep) {
+                            const mainContent = mainStep.querySelector('.main-step-content');
+                            const subSteps = mainStep.querySelectorAll('.sub-step');
+
+                            // Recalculate the height of the main-step-content
+                            let totalHeight = 0;
+                            subSteps.forEach(currentSubStep => {
+                                const currentSubStepContent = currentSubStep.querySelector('.sub-step-content');
+                                if (currentSubStep.classList.contains('expanded')) {
+                                    // Recalculate the height of the current sub-step-content
+                                    currentSubStepContent.style.maxHeight = 'none';
+                                    currentSubStepContent.style.maxHeight = `${currentSubStepContent.scrollHeight}px`;
+                                    totalHeight += currentSubStepContent.scrollHeight;
+                                }
+                            });
+
+                            // Update the main-step-content height
                             mainContent.style.maxHeight = 'none';
-                            mainContent.style.maxHeight = `${mainContent.scrollHeight}px`;
+                            mainContent.style.maxHeight = `${mainContent.scrollHeight + totalHeight}px`;
                         }
                     }
-                }
-            }, 50); // Small delay to allow DOM update
+                }, 300); // Small delay to allow DOM update
+            });
         });
     });
-});
     
     // Re-initialize clipboard after steps are loaded
     document.addEventListener('stepsLoaded', () => {
@@ -233,11 +245,12 @@ function animateContent(content, isCollapsed) {
         } else {
             // Expand
             content.style.maxHeight = 'none';
-            const fullHeight = `${content.scrollHeight}px`;
+            const fullHeight = content.scrollHeight + 'px';
             content.style.maxHeight = '0';
             content.style.paddingTop = '';
             content.style.paddingBottom = '';
             content.style.overflow = 'hidden';
+
             // Force reflow before setting maxHeight
             requestAnimationFrame(() => {
                 content.style.maxHeight = fullHeight;
