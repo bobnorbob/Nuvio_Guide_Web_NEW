@@ -216,44 +216,6 @@ function initializeSubSteps() {
     });
 }
 
-document.addEventListener('stepsLoaded', () => {
-    document.querySelectorAll('.screenshot-toggle').forEach(toggle => {
-        toggle.addEventListener('click', () => {
-            const container = toggle.nextElementSibling;
-            const isExpanded = container.classList.toggle('expanded');
-            const icon = toggle.querySelector('.toggle-icon');
-            const text = toggle.querySelector('.toggle-text');
-
-            // Update UI
-            toggle.setAttribute('aria-expanded', isExpanded);
-            icon.style.transform = isExpanded ? 'rotate(45deg)' : 'rotate(0deg)';
-            text.textContent = isExpanded ? 'Hide Screenshot' : 'Show Screenshot';
-
-            if (isExpanded) {
-                container.style.maxHeight = 'none';
-                setTimeout(() => {
-                    container.style.maxHeight = `${container.scrollHeight}px`;
-
-                    // Recalculate the height of the parent sub-step-content
-                    const subStepContent = container.closest('.sub-step-content');
-                    if (subStepContent) {
-                        const subStep = subStepContent.closest('.sub-step');
-                        updateParentMainStep(subStep);
-                    }
-                }, 50);
-            } else {
-                container.style.maxHeight = '0';
-                // Recalculate the height of the parent sub-step-content
-                const subStepContent = container.closest('.sub-step-content');
-                if (subStepContent) {
-                    const subStep = subStepContent.closest('.sub-step');
-                    updateParentMainStep(subStep);
-                }
-            }
-        });
-    });
-});
-
 // Call both functions after steps are loaded
 document.addEventListener('stepsLoaded', () => {
     initializeMainSteps();
