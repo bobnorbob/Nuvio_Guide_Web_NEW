@@ -115,7 +115,7 @@ document.addEventListener('DOMContentLoaded', () => {
                             mainContent.style.maxHeight = `${mainContent.scrollHeight + totalHeight}px`;
                         }
                     }
-                }, 300); // Small delay to allow DOM update
+                }, 225); // Small delay to allow DOM update
             });
         });
     });

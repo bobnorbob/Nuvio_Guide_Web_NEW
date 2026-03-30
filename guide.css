@@ -295,10 +295,6 @@ h1 {
     transform: scale(1.05);
 }
 
-.checklist-item:hover {
-    background: var(--hover-bg);
-}
-
 .checklist-item input {
     margin-right: var(--spacing-md);
     flex-shrink: 0;
@@ -341,6 +337,7 @@ h1 {
     align-items: center;
     gap: 4px;
     margin-bottom: var(--spacing-xs);
+    transition: all var(--transition-duration) var(--transition-timing);
 }
 
 .screenshot-toggle:hover {
@@ -357,9 +354,7 @@ h1 {
 .screenshot-container {
     width: 100%;
     overflow: hidden;
-    transition: max-height var(--transition-duration) var(--transition-timing),
-                padding-top var(--transition-duration) var(--transition-timing),
-                padding-bottom var(--transition-duration) var(--transition-timing);
+    transition: all var(--transition-duration) var(--transition-timing);
     max-height: 0;
     padding-top: 0;
     padding-bottom: 0;
@@ -369,9 +364,7 @@ h1 {
     max-height: 1000px;
     padding-top: var(--spacing-sm);
     padding-bottom: var(--spacing-sm);
-    transition: max-height var(--transition-duration) var(--transition-timing),
-                padding-top var(--transition-duration) var(--transition-timing),
-                padding-bottom var(--transition-duration) var(--transition-timing);}
+}
 
 .screenshot-container img {
     max-width: 100%;
@@ -384,6 +377,7 @@ h1 {
 /* Rotate icon when expanded */
 .screenshot-toggle[aria-expanded="true"] .toggle-icon {
     transform: rotate(45deg);
+    transition: all var(--transition-duration) var(--transition-timing);
 }
 
 /* ==== Copy-to-Clipboard Function ==== */
