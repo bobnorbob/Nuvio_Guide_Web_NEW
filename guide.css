@@ -296,9 +296,6 @@ h1 {
     transform: scale(1.05);
 }
 
-.checklist-item:hover {
-    background: var(--hover-bg);
-}
 
 .checklist-item input {
     margin-right: var(--spacing-md);
@@ -356,7 +353,7 @@ h1 {
 
 /* Screenshot container */
 .screenshot-container {
-    width: 100%;
+    width: fit-content;
     overflow: hidden;
     transition: max-height var(--transition-duration) var(--transition-timing),
                 padding-top var(--transition-duration) var(--transition-timing),
@@ -370,15 +367,19 @@ h1 {
     max-height: 1000px;
     padding-top: var(--spacing-sm);
     padding-bottom: var(--spacing-sm);
+    padding-left: var(--spacing-sm);
     transition: max-height var(--transition-duration) var(--transition-timing),
                 padding-top var(--transition-duration) var(--transition-timing),
                 padding-bottom var(--transition-duration) var(--transition-timing);}
 
 .screenshot-container img {
     max-width: 100%;
+    height: auto;
+    display: block;
     border-radius: 4px;
     border: 1px solid var(--border-color);
     box-shadow: var(--box-shadow-sm);
+    box-sizing: border-box;
 }
 
 /* Rotate icon when expanded */
