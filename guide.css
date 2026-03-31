@@ -158,7 +158,8 @@ h1 {
     box-shadow: var(--box-shadow-sm);
 }
 
-.main-step-header, .sub-step-header {
+.main-step-header,
+.sub-step-header {
     padding: var(--spacing-sm) var(--spacing-md);
     background: var(--header-bg);
     cursor: pointer;
@@ -171,13 +172,30 @@ h1 {
 }
 
 .main-step-header {
-    padding: var(--spacing-sm) var(--spacing-md);
     font-size: 1.2em;
 }
 
 .main-step-header:hover,
 .sub-step-header:hover {
     background: var(--hover-bg);
+}
+
+/* Animation: Rotate only the + icon */
+.toggle-icon {
+  display: inline-block;
+  font-weight: bold;
+  transition: transform 0.2s ease;
+  margin-left: 8px;
+}
+
+.main-step.collapsed .toggle-icon,
+.sub-step.collapsed .toggle-icon {
+    transform: rotate(0deg);
+}
+
+.main-step:not(.collapsed) .toggle-icon,
+.sub-step:not(.collapsed) .toggle-icon {
+    transform: rotate(45deg);
 }
 
 .main-step-header.checked {
@@ -187,27 +205,6 @@ h1 {
 
 .main-step-header.checked:hover {
     background: #218838;
-}
-
-/* Arrow animation */
-.main-step-header span,
-.sub-step-header span {
-    transition: transform var(--transition-duration) var(--transition-timing);
-    display: inline-block;
-    transform-origin: center;
-    font-size: 1.2em;
-    font-weight: bold;
-    content: '+';
-}
-
-.main-step.collapsed .main-step-header span,
-.sub-step.collapsed .sub-step-header span {
-    transform: rotate(0deg);
-}
-
-.main-step-header span,
-.sub-step-header span {
-    transform: rotate(45deg);
 }
 
 /* Content styles */
@@ -237,7 +234,7 @@ h1 {
 
 /* Collapsed state */
 .main-step.collapsed .main-step-content,
-    .sub-step.collapsed .sub-step-content {
+.sub-step.collapsed .sub-step-content {
     max-height: 0;
     padding-top: 0;
     padding-bottom: 0;
